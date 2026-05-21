@@ -5,7 +5,13 @@
 
 /* Container */
 .intro-year {
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(225deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(45deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(315deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  background-size: 40px 40px, 40px 40px, 40px 40px, 40px 40px, 100% 100%;
   padding: var(--spacing-4xl) var(--spacing-2xl);
 }
 

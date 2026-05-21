@@ -8,10 +8,16 @@
  * - Añadida clase .requirements-card-body para col[1]
  */
 
-/* Container — full width background */
+/* Container — full width background, same as intro-year with grid pattern */
 .requirements {
   padding: var(--spacing-4xl) var(--spacing-2xl);
-  background: var(--color-primary-dark);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(225deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(45deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(315deg, rgb(255 255 255 / 8%) 25%, transparent 25%),
+    linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background-size: 40px 40px, 40px 40px, 40px 40px, 40px 40px, 100% 100%;
 }
 
 /* Info banner */
