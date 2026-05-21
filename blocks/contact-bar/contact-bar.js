@@ -11,16 +11,23 @@
  */
 export default function decorate(block) {
   // Gather all content elements from the block
-  const heading = block.querySelector('h2, h3');
   const allLinks = [...block.querySelectorAll('a')];
   const allParagraphs = [...block.querySelectorAll(':scope p')];
 
   // Separate paragraphs: those with links vs plain text
   const textParas = allParagraphs.filter((p) => !p.querySelector('a') && p.textContent.trim());
 
-  // Identify description: the longest plain paragraph (or first non-title one)
-  const descPara = textParas.find((p) => p.textContent.trim().length > 20)
-    || textParas.find((p) => p !== heading);
+  // Identify title: explicit h2/h3, or the short text that isn't phone/email
+  let titleEl = block.querySelector('h2, h3');
+  if (!titleEl) {
+    titleEl = textParas.find((p) => {
+      const t = p.textContent.trim();
+      return t.length < 20 && !t.includes('@') && !/\d{2,}/.test(t);
+    });
+  }
+
+  // Identify description: the longest plain paragraph (excluding title)
+  const descPara = textParas.find((p) => p !== titleEl && p.textContent.trim().length > 20);
 
   // Build semantic layout
   const container = document.createElement('div');
@@ -29,9 +36,9 @@ export default function decorate(block) {
   // Heading
   const headingWrapper = document.createElement('div');
   headingWrapper.classList.add('contact-bar-heading');
-  if (heading) {
-    heading.classList.add('contact-bar-title');
-    headingWrapper.append(heading);
+  if (titleEl) {
+    titleEl.classList.add('contact-bar-title');
+    headingWrapper.append(titleEl);
   }
 
   // Body (description)
@@ -54,8 +61,12 @@ export default function decorate(block) {
       actionsWrapper.append(a);
     });
   } else {
-    // No links found — build from remaining text paragraphs
-    const ctaTexts = textParas.filter((p) => p !== descPara && p.textContent.trim());
+    // No links found — build CTAs from phone/email paragraphs only
+    const ctaTexts = textParas.filter((p) => {
+      if (p === titleEl || p === descPara) return false;
+      const t = p.textContent.trim();
+      return t.includes('@') || /\d{2,}/.test(t);
+    });
     ctaTexts.forEach((p) => {
       const a = document.createElement('a');
       a.classList.add('contact-bar-cta');
@@ -63,10 +74,8 @@ export default function decorate(block) {
       const text = p.textContent.trim();
       if (text.includes('@')) {
         a.href = `mailto:${text}`;
-      } else if (/\d{2,}/.test(text)) {
-        a.href = `tel:${text.replace(/[^\d+]/g, '')}`;
       } else {
-        a.href = '#';
+        a.href = `tel:${text.replace(/[^\d+]/g, '')}`;
       }
       actionsWrapper.append(a);
     });
