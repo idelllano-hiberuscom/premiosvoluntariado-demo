@@ -10,6 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+}
+
 :root {
   /* === Design tokens — Premios al Voluntariado === */
 
@@ -287,17 +299,23 @@ main img {
 /* sections */
 main {
   display: block;
+  width: 100%;
+  max-width: 100%;
 }
 
 main > .section {
   margin: 0;
+  padding: 0;
   display: block;
+  width: 100%;
+  max-width: 100%;
 }
 
 main > .section > div {
-  max-width: none;
-  margin: auto;
+  max-width: 100%;
+  margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 main > .section:first-of-type {
