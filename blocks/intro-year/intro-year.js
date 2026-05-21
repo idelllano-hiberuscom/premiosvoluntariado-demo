@@ -2,26 +2,51 @@
  * Intro Year Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * xwalk DOM: 1 row, 3 cells: [picture(logo)], [year text], [richtext description]
+ * Container fields (delivered as individual rows, 1 cell each):
+ *   logo (picture), year (short text), description (richtext/long text)
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
-  const row = block.children[0];
-  if (!row) return;
+  const rows = [...block.children];
 
-  const cols = [...row.children];
-  const mediaCell = cols[0]; // <picture>
-  const yearCell = cols[1]; // <p>2025</p>
-  const descCell = cols[2]; // richtext paragraphs
+  // --- Detect structure: 1 row with 3+ cells OR individual rows ---
+  let mediaCell = null;
+  let yearCell = null;
+  let descCell = null;
 
-  // Classify cells
+  if (rows.length === 1 && rows[0].children.length >= 3) {
+    // Single row with multiple cells
+    const cols = [...rows[0].children];
+    [mediaCell, yearCell, descCell] = cols;
+  } else {
+    // Individual rows (1 cell per field) — classify by content
+    rows.forEach((row) => {
+      const cell = row.children[0] || row;
+      if (!mediaCell && cell.querySelector('picture')) {
+        mediaCell = cell;
+      } else if (!yearCell && cell.textContent.trim().length <= 10) {
+        yearCell = cell;
+      } else if (!descCell && cell.textContent.trim().length > 10) {
+        descCell = cell;
+      }
+    });
+  }
+
+  // Apply classes
   if (mediaCell) mediaCell.classList.add('intro-year-media');
   if (yearCell) yearCell.classList.add('intro-year-year');
   if (descCell) descCell.classList.add('intro-year-description');
 
-  // Wrap row for layout
-  row.classList.add('intro-year-content');
+  // Build single-row flex layout
+  const content = document.createElement('div');
+  content.classList.add('intro-year-content');
+  if (mediaCell) content.append(mediaCell);
+  if (yearCell) content.append(yearCell);
+  if (descCell) content.append(descCell);
+
+  block.textContent = '';
+  block.append(content);
 
   // Lazy-load images
   block.querySelectorAll('picture img').forEach((img) => {

@@ -12,7 +12,7 @@
 export default function decorate(block) {
   // Gather all content elements from the block
   const allLinks = [...block.querySelectorAll('a')];
-  const allParagraphs = [...block.querySelectorAll(':scope p')];
+  const allParagraphs = [...block.querySelectorAll('p')];
 
   // Separate paragraphs: those with links vs plain text
   const textParas = allParagraphs.filter((p) => !p.querySelector('a') && p.textContent.trim());

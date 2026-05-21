@@ -31,8 +31,10 @@
 
 /* Year */
 .intro-year-year {
-  font: var(--font-weight-light) 40px/1 var(--font-family-heading);
+  font: var(--font-weight-light) 48px/1 var(--font-family-heading);
   color: var(--color-bg-white);
+  background: var(--color-primary-dark);
+  padding: var(--spacing-md) var(--spacing-xl);
   flex-shrink: 0;
 }
 
