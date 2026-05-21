@@ -2,9 +2,10 @@
  * Blog Cards Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * xwalk DOM (container):
- *   Row 0 (config): 4 cells [picture logo], [title text], [subtitle text], [heading text]
- *   Rows 1+ (items): 4 cells [picture], [<a> linkText+link], [date text], [excerpt text]
+ * xwalk DOM structure (container block):
+ *   - Header fields may arrive as: one row with 4 cells, OR individual rows (1 cell each)
+ *   - Item rows: multiple cells [picture, linkText, date, excerpt, link]
+ *   - Detection: rows with 1 child = header field, rows with 2+ children = item
  *
  * @param {Element} block - Root element of the block
  */
@@ -13,51 +14,89 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 export default function decorate(block) {
   const rows = [...block.children];
 
-  // --- Row 0: Config/Header ---
-  const headerRow = rows[0];
-  const headerCols = [...headerRow.children];
+  // --- Separate header fields from item rows ---
+  // Header fields: rows with 1 child cell. Items: rows with multiple cells.
+  const headerRows = [];
+  const itemRows = [];
+  rows.forEach((row) => {
+    if (row.children.length <= 1) {
+      headerRows.push(row);
+    } else {
+      itemRows.push(row);
+    }
+  });
 
-  // Cell 0: logo picture
-  const logoCell = headerCols[0];
-  if (logoCell) logoCell.classList.add('blog-cards-logo');
-
-  // Cell 1: blog title
-  const titleCell = headerCols[1];
-  if (titleCell) titleCell.classList.add('blog-cards-title');
-
-  // Cell 2: subtitle
-  const subtitleCell = headerCols[2];
-  if (subtitleCell) subtitleCell.classList.add('blog-cards-subtitle');
-
-  // Cell 3: section heading — move OUTSIDE header row
-  const headingCell = headerCols[3];
-
-  // Rebuild header: logo left + text group centered
-  const headerContent = document.createElement('div');
-  headerContent.classList.add('blog-cards-header');
-  if (logoCell) headerContent.append(logoCell);
-  const textGroup = document.createElement('div');
-  textGroup.classList.add('blog-cards-header-text');
-  if (titleCell) textGroup.append(titleCell);
-  if (subtitleCell) textGroup.append(subtitleCell);
-  headerContent.append(textGroup);
-
-  // Replace original header row
-  headerRow.replaceWith(headerContent);
-
-  // Section heading as separate element below header
-  if (headingCell) {
-    headingCell.classList.add('blog-cards-section-heading');
-    headerContent.after(headingCell);
+  // If first row has 4+ cells, all header is in row 0 (alternative structure)
+  if (rows.length > 0 && rows[0].children.length >= 4) {
+    const headerCols = [...rows[0].children];
+    headerRows.length = 0;
+    headerRows.push(
+      ...headerCols.map((cell) => {
+        const wrapper = document.createElement('div');
+        wrapper.append(cell);
+        return wrapper;
+      }),
+    );
+    itemRows.length = 0;
+    for (let i = 1; i < rows.length; i += 1) {
+      itemRows.push(rows[i]);
+    }
+    rows[0].remove();
   }
 
-  // --- Rows 1+: Post items ---
+  // Classify header cells by content type
+  let logoCell = null;
+  let titleCell = null;
+  let subtitleCell = null;
+  let headingCell = null;
+
+  headerRows.forEach((row) => {
+    const cell = row.children[0] || row;
+    if (!logoCell && cell.querySelector('picture')) {
+      logoCell = cell;
+    } else if (!titleCell && cell.textContent.trim()) {
+      titleCell = cell;
+    } else if (!subtitleCell && cell.textContent.trim()) {
+      subtitleCell = cell;
+    } else if (!headingCell && cell.textContent.trim()) {
+      headingCell = cell;
+    }
+  });
+
+  // Build header: logo left + text group centered
+  const headerContent = document.createElement('div');
+  headerContent.classList.add('blog-cards-header');
+
+  if (logoCell) {
+    logoCell.classList.add('blog-cards-logo');
+    headerContent.append(logoCell);
+  }
+
+  const textGroup = document.createElement('div');
+  textGroup.classList.add('blog-cards-header-text');
+  if (titleCell) {
+    titleCell.classList.add('blog-cards-title');
+    textGroup.append(titleCell);
+  }
+  if (subtitleCell) {
+    subtitleCell.classList.add('blog-cards-subtitle');
+    textGroup.append(subtitleCell);
+  }
+  headerContent.append(textGroup);
+
+  // Section heading — separate element below header
+  let headingEl = null;
+  if (headingCell) {
+    headingCell.classList.add('blog-cards-section-heading');
+    headingEl = headingCell;
+  }
+
+  // --- Item rows: Post items ---
   const grid = document.createElement('ul');
   grid.classList.add('blog-cards-grid');
   grid.setAttribute('aria-label', 'Últimos artículos del blog');
 
-  for (let i = 1; i < rows.length; i += 1) {
-    const row = rows[i];
+  itemRows.forEach((row) => {
     const cols = [...row.children];
     const li = document.createElement('li');
     li.classList.add('blog-cards-item');
@@ -91,8 +130,8 @@ export default function decorate(block) {
     if (cols[4] && cols[1]) {
       const url = cols[4].textContent.trim();
       if (url) {
-        const titleP = cols[1].querySelector('p');
-        if (titleP && !titleP.querySelector('a')) {
+        const titleP = cols[1].querySelector('p, a');
+        if (titleP && titleP.tagName === 'P' && !titleP.querySelector('a')) {
           const a = document.createElement('a');
           a.href = url;
           a.textContent = titleP.textContent;
@@ -103,9 +142,12 @@ export default function decorate(block) {
     }
 
     grid.append(li);
-    row.remove();
-  }
+  });
 
+  // Clear block and rebuild
+  block.textContent = '';
+  block.append(headerContent);
+  if (headingEl) block.append(headingEl);
   block.append(grid);
 
   // Lazy images
@@ -119,7 +161,6 @@ export default function decorate(block) {
   block.dataset.aueModel = 'blog-cards';
   block.dataset.aueLabel = 'Blog Cards';
 
-  // Config cells
   if (logoCell) {
     logoCell.dataset.aueProp = 'logo';
     logoCell.dataset.aueType = 'media';
@@ -135,10 +176,10 @@ export default function decorate(block) {
     subtitleCell.dataset.aueType = 'text';
     subtitleCell.dataset.aueLabel = 'Subtítulo';
   }
-  if (headingCell) {
-    headingCell.dataset.aueProp = 'heading';
-    headingCell.dataset.aueType = 'text';
-    headingCell.dataset.aueLabel = 'Título sección';
+  if (headingEl) {
+    headingEl.dataset.aueProp = 'heading';
+    headingEl.dataset.aueType = 'text';
+    headingEl.dataset.aueLabel = 'Título sección';
   }
 
   // Grid container
