@@ -321,6 +321,7 @@ main .section.highlight {
 main > .section > .hero-carousel-wrapper,
 main > .section > .contact-bar-wrapper,
 main > .section > .intro-year-wrapper,
+main > .section > .requirements-wrapper,
 main > .section > .blog-cards-wrapper,
 main > .section > .vidas-cruzadas-wrapper {
   max-width: none;

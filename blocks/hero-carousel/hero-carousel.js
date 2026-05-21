@@ -130,7 +130,7 @@ export default function decorate(block) {
 
   controls.append(prevBtn, dotsContainer, nextBtn);
 
-  // Edition bar below controls
+  // Edition bar below controls — only shows edition label
   const editionBar = document.createElement('div');
   editionBar.classList.add('hero-carousel-edition-bar');
 
@@ -139,20 +139,7 @@ export default function decorate(block) {
     labelSpan.classList.add('edition-label');
     labelSpan.textContent = editionLabel;
     editionBar.append(labelSpan);
-
-    // Separator + active slide title
-    const sep = document.createElement('span');
-    sep.classList.add('edition-separator');
-    editionBar.append(sep);
   }
-
-  const slideTitleSpan = document.createElement('span');
-  slideTitleSpan.classList.add('edition-slide-title');
-  if (slideRows[0]) {
-    const firstContent = slideRows[0].querySelector('.hero-carousel-content');
-    if (firstContent) slideTitleSpan.textContent = firstContent.textContent.trim();
-  }
-  editionBar.append(slideTitleSpan);
 
   block.textContent = '';
   block.append(viewport, controls, editionBar);
@@ -224,10 +211,6 @@ export default function decorate(block) {
     dots[newIndex].setAttribute('aria-selected', 'true');
 
     track.style.transform = `translateX(-${newIndex * 100}%)`;
-
-    // Update edition bar slide title
-    const newContent = slideRows[newIndex].querySelector('.hero-carousel-content');
-    if (newContent) slideTitleSpan.textContent = newContent.textContent.trim();
 
     currentIndex = newIndex;
   }

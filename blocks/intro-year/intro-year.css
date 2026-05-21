@@ -33,10 +33,10 @@
 
 /* Year + Description stacked vertically */
 .intro-year-year {
-  font: var(--font-weight-light) 48px/1 var(--font-family-heading);
+  font: var(--font-weight-regular) 28px/1.2 var(--font-family-heading);
   color: var(--color-bg-white);
   background: var(--color-primary-dark);
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-lg);
   display: inline-block;
   margin-bottom: var(--spacing-lg);
 }
