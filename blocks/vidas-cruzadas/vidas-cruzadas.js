@@ -2,9 +2,9 @@
  * Vidas Cruzadas Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * xwalk DOM (container):
- *   Row 0 (config): 4 cells [picture logo], [richtext description], [cta <a>], [picture decoration]
- *   Rows 1+ (items): 3 cells [picture], [title text], [url text]
+ * Container fields (delivered as individual rows, 1 cell each):
+ *   logo (picture), description (richtext), ctaText, cta (url), decorationImage (picture)
+ * Item rows (2-3 cells): [picture image], [title text], [url text]
  *
  * @param {Element} block - Root element of the block
  */
@@ -13,53 +13,100 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 export default function decorate(block) {
   const rows = [...block.children];
 
-  // --- Row 0: Config header ---
-  const headerRow = rows[0];
-  const headerCols = [...headerRow.children];
+  // --- Separate container fields from item rows ---
+  // Items have 2+ cells (image + title, or image + title + url)
+  // Container fields have 1 cell each
+  const containerRows = [];
+  const itemRows = [];
 
-  // Cell 0: logo
-  const logoCell = headerCols[0];
-  if (logoCell) logoCell.classList.add('vidas-cruzadas-logo');
+  rows.forEach((row) => {
+    if (row.children.length >= 2) {
+      itemRows.push(row);
+    } else {
+      containerRows.push(row);
+    }
+  });
 
-  // Cell 1: description (richtext)
-  const descCell = headerCols[1];
-  if (descCell) descCell.classList.add('vidas-cruzadas-text');
+  // --- Classify container fields by content ---
+  // Model field order: logo, description, ctaText, cta, decorationImage
+  let logoCell = null;
+  let descCell = null;
+  let ctaTextCell = null;
+  let ctaUrlCell = null;
+  let decoCell = null;
 
-  // Cell 2: CTA link (collapsed ctaText+cta)
-  const ctaCell = headerCols[2];
-  if (ctaCell) {
-    ctaCell.classList.add('vidas-cruzadas-cta-wrapper');
-    const ctaLink = ctaCell.querySelector('a');
-    if (ctaLink) ctaLink.classList.add('vidas-cruzadas-cta');
-  }
+  const pictures = [];
+  const texts = [];
 
-  // Cell 3: decoration image
-  const decoCell = headerCols[3];
-  if (decoCell) decoCell.classList.add('vidas-cruzadas-decoration');
+  containerRows.forEach((row) => {
+    const cell = row.children[0] || row;
+    if (cell.querySelector('picture')) {
+      pictures.push(cell);
+    } else if (cell.textContent.trim()) {
+      texts.push(cell);
+    }
+  });
 
-  // --- Build layout: logo banner + body (sidebar + stories) ---
+  // First picture = logo, last picture = decoration (if 2+ pictures)
+  if (pictures.length >= 1) [logoCell] = pictures;
+  if (pictures.length >= 2) decoCell = pictures[pictures.length - 1];
+
+  // Texts: description is the longest, ctaText contains <a> or is short
+  texts.forEach((cell) => {
+    const hasLink = cell.querySelector('a');
+    const textLen = cell.textContent.trim().length;
+    if (hasLink || (!descCell && !ctaTextCell && textLen <= 40)) {
+      if (!ctaTextCell) ctaTextCell = cell;
+      else if (!ctaUrlCell) ctaUrlCell = cell;
+    } else if (!descCell) {
+      descCell = cell;
+    } else if (!ctaTextCell) {
+      ctaTextCell = cell;
+    } else if (!ctaUrlCell) {
+      ctaUrlCell = cell;
+    }
+  });
+
+  // --- Build layout ---
 
   // Logo banner (white card)
   const logoBanner = document.createElement('div');
   logoBanner.classList.add('vidas-cruzadas-banner');
   if (logoCell) logoBanner.append(logoCell);
 
-  // Body: two columns — sidebar (text + cta) | stories
+  // Body: sidebar (text + cta) | stories
   const body = document.createElement('div');
   body.classList.add('vidas-cruzadas-body');
 
-  // Sidebar (text + cta)
+  // Sidebar
   const sidebar = document.createElement('div');
   sidebar.classList.add('vidas-cruzadas-sidebar');
-  if (descCell) sidebar.append(descCell);
-  if (ctaCell) sidebar.append(ctaCell);
+  if (descCell) {
+    descCell.classList.add('vidas-cruzadas-text');
+    sidebar.append(descCell);
+  }
+  if (ctaTextCell) {
+    ctaTextCell.classList.add('vidas-cruzadas-cta-wrapper');
+    const ctaLink = ctaTextCell.querySelector('a');
+    if (ctaLink) {
+      ctaLink.classList.add('vidas-cruzadas-cta');
+    } else if (ctaUrlCell) {
+      // Build link from text + url cells
+      const a = document.createElement('a');
+      a.href = ctaUrlCell.textContent.trim();
+      a.textContent = ctaTextCell.textContent.trim();
+      a.classList.add('vidas-cruzadas-cta');
+      ctaTextCell.textContent = '';
+      ctaTextCell.append(a);
+    }
+    sidebar.append(ctaTextCell);
+  }
 
-  // --- Rows 1+: Story items ---
+  // Stories list
   const storiesList = document.createElement('ul');
   storiesList.classList.add('vidas-cruzadas-stories');
 
-  for (let i = 1; i < rows.length; i += 1) {
-    const row = rows[i];
+  itemRows.forEach((row) => {
     const cols = [...row.children];
     const li = document.createElement('li');
     li.classList.add('vidas-cruzadas-story');
@@ -77,13 +124,10 @@ export default function decorate(block) {
       li.append(cols[1]);
     }
 
-    // Cell 2: url (hidden metadata, used for link)
+    // Cell 2: url (hidden, used for link wrapping)
     if (cols[2]) {
-      cols[2].classList.add('vidas-cruzadas-story-url');
       cols[2].hidden = true;
       li.append(cols[2]);
-
-      // Wrap entire li in a link if url provided
       const urlText = cols[2].textContent.trim();
       if (urlText) {
         const link = document.createElement('a');
@@ -96,16 +140,18 @@ export default function decorate(block) {
     }
 
     storiesList.append(li);
-    row.remove();
-  }
+  });
 
   body.append(sidebar, storiesList);
 
-  // Decoration (position absolute or hidden)
-  if (decoCell) body.append(decoCell);
+  // Decoration (position absolute)
+  if (decoCell) {
+    decoCell.classList.add('vidas-cruzadas-decoration');
+    body.append(decoCell);
+  }
 
-  // Replace original header row content
-  headerRow.remove();
+  // Clear and rebuild
+  block.textContent = '';
   block.append(logoBanner, body);
 
   // Lazy images
@@ -129,10 +175,10 @@ export default function decorate(block) {
     descCell.dataset.aueType = 'richtext';
     descCell.dataset.aueLabel = 'Descripción';
   }
-  if (ctaCell) {
-    ctaCell.dataset.aueProp = 'ctaText';
-    ctaCell.dataset.aueType = 'text';
-    ctaCell.dataset.aueLabel = 'CTA';
+  if (ctaTextCell) {
+    ctaTextCell.dataset.aueProp = 'ctaText';
+    ctaTextCell.dataset.aueType = 'text';
+    ctaTextCell.dataset.aueLabel = 'CTA';
   }
   if (decoCell) {
     decoCell.dataset.aueProp = 'decorationImage';
