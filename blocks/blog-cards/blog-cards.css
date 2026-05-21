@@ -1,11 +1,6 @@
 /**
  * Blog Cards Block — Styles
- * Figma reference: 1:496 (desktop), 1:192 (mobile)
  * Model: xwalk (EDS + Universal Editor)
- *
- * QA audit: ✅ Validado
- * QA Changes:
- * - Sin cambios necesarios
  */
 
 /* Container */
@@ -14,16 +9,22 @@
   padding: var(--spacing-2xl);
 }
 
-/* Header */
+/* Header — white card with logo + title + subtitle */
 .blog-cards-header {
   background: var(--color-bg-white);
   box-shadow: var(--shadow-card);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: var(--spacing-xl);
-  gap: var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-4xl);
+  gap: var(--spacing-3xl);
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.blog-cards-logo {
+  flex-shrink: 0;
 }
 
 .blog-cards-logo img {
@@ -41,20 +42,19 @@
 }
 
 .blog-cards-subtitle {
-  font: var(--font-weight-regular) 24px/30px var(--font-family-heading);
+  font: var(--font-weight-regular) 18px/26px var(--font-family-heading);
   color: var(--color-primary-link);
-  text-align: center;
 }
 
 .blog-cards-subtitle p {
   margin: 0;
 }
 
-/* Section heading cell */
+/* Section heading — separate bar below header */
 .blog-cards-section-heading {
-  background: var(--color-primary-lighter);
-  padding: var(--spacing-4xl) var(--spacing-xl);
-  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-xl);
 }
 
 .blog-cards-section-heading p {
@@ -66,47 +66,58 @@
 /* Grid */
 .blog-cards-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-md);
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 1160px;
 }
 
 /* Card item */
 .blog-cards-item {
+  background: var(--color-bg-white);
   padding: var(--spacing-lg);
-  background: linear-gradient(to top, var(--color-bg-grey) 85%, var(--color-primary-lighter) 85%);
 }
 
 /* Card image */
 .blog-cards-image {
-  border: 2px solid var(--color-bg-white);
   aspect-ratio: 220/149;
   overflow: hidden;
+  margin-bottom: var(--spacing-md);
 }
 
 .blog-cards-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* Card title */
+/* Card title (link cell) */
 .blog-cards-item-title {
-  font: var(--font-weight-medium) 20px/28px var(--font-family-heading);
+  font: var(--font-weight-medium) 18px/26px var(--font-family-heading);
   color: var(--color-primary-dark);
-  padding: var(--spacing-md) 0 var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.blog-cards-item-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-cards-item-title p {
   margin: 0;
 }
 
 /* Card date */
 .blog-cards-date {
-  display: inline-block;
-  background: var(--color-bg-light);
-  padding: var(--spacing-sm);
   font: var(--font-weight-regular) 14px/20px var(--font-family-heading);
   color: var(--color-primary-link);
+  margin-bottom: var(--spacing-sm);
+}
+
+.blog-cards-date p {
   margin: 0;
 }
 
@@ -116,24 +127,21 @@
   color: var(--color-text-light);
   max-height: 160px;
   overflow: hidden;
-  margin: var(--spacing-sm) 0 0;
 }
 
-/* Desktop: 768px+ */
-@media (width >= 768px) {
+.blog-cards-excerpt p {
+  margin: 0;
+}
+
+/* Mobile */
+@media (width <= 767px) {
   .blog-cards-header {
-    flex-direction: row;
-    text-align: left;
-    padding: var(--spacing-xl) var(--spacing-4xl);
-    gap: var(--spacing-3xl);
+    flex-direction: column;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-lg);
   }
 
   .blog-cards-grid {
-    display: flex;
-  }
-
-  .blog-cards-item {
-    flex: 1 0 0;
-    padding: var(--spacing-3xl);
+    grid-template-columns: 1fr;
   }
 }

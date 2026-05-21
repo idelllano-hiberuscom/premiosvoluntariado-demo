@@ -30,9 +30,12 @@ export default function decorate(block) {
   const subtitleCell = headerCols[2];
   if (subtitleCell) subtitleCell.classList.add('blog-cards-subtitle');
 
-  // Cell 3: section heading
+  // Cell 3: section heading — move OUTSIDE header row
   const headingCell = headerCols[3];
-  if (headingCell) headingCell.classList.add('blog-cards-section-heading');
+  if (headingCell) {
+    headingCell.classList.add('blog-cards-section-heading');
+    headerRow.after(headingCell);
+  }
 
   // --- Rows 1+: Post items ---
   const grid = document.createElement('ul');

@@ -15,7 +15,6 @@ export default function decorate(block) {
 
   // --- Row 0: Config header ---
   const headerRow = rows[0];
-  headerRow.classList.add('vidas-cruzadas-header');
   const headerCols = [...headerRow.children];
 
   // Cell 0: logo
@@ -37,6 +36,23 @@ export default function decorate(block) {
   // Cell 3: decoration image
   const decoCell = headerCols[3];
   if (decoCell) decoCell.classList.add('vidas-cruzadas-decoration');
+
+  // --- Build layout: logo banner + body (sidebar + stories) ---
+
+  // Logo banner (white card)
+  const logoBanner = document.createElement('div');
+  logoBanner.classList.add('vidas-cruzadas-banner');
+  if (logoCell) logoBanner.append(logoCell);
+
+  // Body: two columns — sidebar (text + cta) | stories
+  const body = document.createElement('div');
+  body.classList.add('vidas-cruzadas-body');
+
+  // Sidebar (text + cta)
+  const sidebar = document.createElement('div');
+  sidebar.classList.add('vidas-cruzadas-sidebar');
+  if (descCell) sidebar.append(descCell);
+  if (ctaCell) sidebar.append(ctaCell);
 
   // --- Rows 1+: Story items ---
   const storiesList = document.createElement('ul');
@@ -74,7 +90,6 @@ export default function decorate(block) {
         link.href = urlText;
         link.classList.add('vidas-cruzadas-story-link');
         link.setAttribute('aria-label', cols[1] ? cols[1].textContent.trim() : '');
-        // Move li children into the link
         while (li.firstChild) link.append(li.firstChild);
         li.append(link);
       }
@@ -84,7 +99,14 @@ export default function decorate(block) {
     row.remove();
   }
 
-  block.append(storiesList);
+  body.append(sidebar, storiesList);
+
+  // Decoration (position absolute or hidden)
+  if (decoCell) body.append(decoCell);
+
+  // Replace original header row content
+  headerRow.remove();
+  block.append(logoBanner, body);
 
   // Lazy images
   block.querySelectorAll('picture img').forEach((img) => {

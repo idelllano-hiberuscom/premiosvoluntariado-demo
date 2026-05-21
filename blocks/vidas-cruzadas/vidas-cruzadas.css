@@ -9,36 +9,39 @@
   padding: var(--spacing-4xl) var(--spacing-md);
 }
 
-/* Header — config row: logo, text, cta, decoration */
-.vidas-cruzadas-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: var(--spacing-lg) var(--spacing-4xl);
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
-  position: relative;
-}
-
-/* Logo cell — spans full width */
-.vidas-cruzadas-logo {
-  grid-column: 1 / -1;
+/* Logo banner — white card centered */
+.vidas-cruzadas-banner {
   background: var(--color-bg-white);
   box-shadow: var(--shadow-card);
+  max-width: 1220px;
+  margin: 0 auto;
   padding: var(--spacing-xl);
   text-align: center;
 }
 
 .vidas-cruzadas-logo img {
   width: 300px;
-  height: 66px;
+  height: auto;
   display: inline-block;
 }
 
-/* Text cell */
-.vidas-cruzadas-text {
-  max-width: 320px;
+/* Body — two columns: sidebar left + stories right */
+.vidas-cruzadas-body {
+  position: relative;
+  max-width: 1120px;
+  margin: var(--spacing-xl) auto 0;
+  padding: var(--spacing-2xl) 0;
+  display: flex;
+  gap: var(--spacing-4xl);
+}
+
+/* Sidebar (text + CTA) */
+.vidas-cruzadas-sidebar {
+  max-width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
 .vidas-cruzadas-text p {
@@ -47,11 +50,7 @@
   margin: 0 0 var(--spacing-md);
 }
 
-/* CTA cell */
-.vidas-cruzadas-cta-wrapper {
-  grid-column: 1;
-}
-
+/* CTA link */
 .vidas-cruzadas-cta {
   font: var(--font-weight-medium) 18px/30px var(--font-family-heading);
   color: var(--color-primary-link);
@@ -63,11 +62,13 @@
   text-decoration: underline;
 }
 
-/* Decoration cell — positioned right */
+/* Decoration — positioned absolute */
 .vidas-cruzadas-decoration {
-  grid-row: 2 / 4;
-  grid-column: 2;
-  align-self: start;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .vidas-cruzadas-decoration img {
@@ -82,21 +83,21 @@
   gap: var(--spacing-4xl);
   list-style: none;
   padding: 0;
-  margin: var(--spacing-xl) auto 0;
-  max-width: 1120px;
+  margin: 0;
+  flex: 1;
 }
 
 /* Story item */
 .vidas-cruzadas-story {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-4xl);
+  gap: var(--spacing-xl);
 }
 
 .vidas-cruzadas-story-link {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-4xl);
+  gap: var(--spacing-xl);
   text-decoration: none;
   color: inherit;
 }
@@ -130,16 +131,11 @@
 
 /* Mobile */
 @media (width <= 767px) {
-  .vidas-cruzadas-header {
-    grid-template-columns: 1fr;
+  .vidas-cruzadas-body {
+    flex-direction: column;
   }
 
-  .vidas-cruzadas-decoration {
-    grid-row: auto;
-    grid-column: auto;
-  }
-
-  .vidas-cruzadas-text {
+  .vidas-cruzadas-sidebar {
     max-width: 100%;
   }
 

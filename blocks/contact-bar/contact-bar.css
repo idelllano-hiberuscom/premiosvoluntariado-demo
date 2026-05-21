@@ -1,6 +1,5 @@
 /**
  * Contact Bar Block — Styles
- * Figma reference: 1:485 (desktop), 1:181 (mobile)
  * Model: xwalk (EDS + Universal Editor)
  */
 
@@ -10,14 +9,14 @@
   padding: var(--spacing-4xl) var(--spacing-2xl);
 }
 
-/* Grid layout */
+/* Grid layout: title left, desc right, actions below spanning full */
 .contact-bar-container {
   max-width: 1160px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-lg) var(--spacing-3xl);
   align-items: center;
 }
 
@@ -33,7 +32,7 @@
   grid-row: 1;
 }
 
-/* Title */
+/* Title cell */
 .contact-bar-title {
   font: var(--font-weight-regular) 40px/40px var(--font-family-heading);
   color: var(--color-primary-light);
@@ -43,7 +42,7 @@
   margin: 0;
 }
 
-/* Body text */
+/* Body text cell */
 .contact-bar-text {
   font: var(--font-weight-regular) 20px/30px var(--font-family-heading);
   color: var(--color-primary-lighter);
@@ -56,25 +55,34 @@
 /* Actions row */
 .contact-bar-actions {
   grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
   gap: var(--spacing-lg);
 }
 
 /* CTA buttons */
 .contact-bar-cta {
+  display: inline-block;
   background: var(--color-primary-light);
   color: white;
-  font: var(--font-weight-bold) 24px/24px var(--font-family-cta);
-  padding: var(--spacing-lg);
+  font: var(--font-weight-bold) 20px/24px var(--font-family-cta);
+  padding: var(--spacing-md) var(--spacing-lg);
   letter-spacing: 1px;
   text-decoration: none;
+  border: 2px solid var(--color-primary-light);
 }
 
 .contact-bar-cta:hover,
 .contact-bar-cta:focus-visible {
   background: var(--color-primary);
-  outline: 2px solid var(--color-primary-lighter);
-  outline-offset: 2px;
+  border-color: var(--color-primary-lighter);
+  outline: none;
+}
+
+/* Remove p margin inside action cells */
+.contact-bar-phone p,
+.contact-bar-email p {
+  margin: 0;
 }
 
 /* Mobile */
@@ -84,7 +92,16 @@
     text-align: center;
   }
 
+  .contact-bar-heading {
+    grid-column: 1;
+  }
+
+  .contact-bar-body {
+    grid-column: 1;
+  }
+
   .contact-bar-actions {
+    grid-column: 1;
     flex-direction: column;
     align-items: center;
   }
