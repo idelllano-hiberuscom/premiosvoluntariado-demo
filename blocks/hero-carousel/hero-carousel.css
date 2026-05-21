@@ -17,20 +17,35 @@
   background: linear-gradient(180deg, #0a4f80 0%, rgb(10 79 128 / 85%) 70%, white 100%);
 }
 
-/* 3. Config row (oculta visualmente, preservada para UE) */
+/* 3. Config row — visible below dots as edition label */
 .hero-carousel-config {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  display: none;
 }
 
-/* 4. Viewport y track */
+/* Edition info bar below dots */
+.hero-carousel-edition-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  font: var(--font-weight-semibold) 16px/1.4 var(--font-family-body);
+  color: var(--color-text-body);
+}
+
+.hero-carousel-edition-bar .edition-label {
+  font-weight: var(--font-weight-bold);
+}
+
+.hero-carousel-edition-bar .edition-separator {
+  width: 1px;
+  height: 16px;
+  background: var(--color-text-body);
+}
+
+/* 4. Viewport and track */
 .hero-carousel-viewport {
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -40,25 +55,21 @@
   will-change: transform;
 }
 
-/* 5. Slides */
+/* 5. Slides — full width, image as background */
 .hero-carousel-slide {
   min-width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: var(--spacing-sm) var(--spacing-2xl);
-  align-items: center;
-  padding: var(--spacing-4xl) var(--spacing-2xl);
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: stretch;
   box-sizing: border-box;
 }
 
-/* 6. Media (columna imagen) */
+/* 6. Media (full cover image) */
 .hero-carousel-media {
-  grid-row: 1 / -1;
-  grid-column: 1;
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
 .hero-carousel-media picture {
@@ -74,19 +85,46 @@
   display: block;
 }
 
-/* 7. Content (title cell) */
+/* 7. Content — white floating card on the right */
 .hero-carousel-content {
-  grid-column: 2;
-  grid-row: 1;
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: 32px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 320px;
+  max-width: 35%;
+  background: white;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 15%);
+  padding: var(--spacing-xl) var(--spacing-2xl);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  max-width: 320px;
-  font-family: var(--font-family-cta);
-  font-weight: var(--font-weight-semibold);
-  font-size: 18px;
-  line-height: 24px;
-  color: var(--color-bg-white);
+  justify-content: center;
+  align-self: center;
+}
+
+.hero-carousel-content p {
+  font: var(--font-weight-regular) 16px/1.5 var(--font-family-body);
+  color: var(--color-text-body);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.hero-carousel-content h2,
+.hero-carousel-content strong {
+  font: var(--font-weight-bold) 22px/1.3 var(--font-family-heading);
+  color: var(--color-primary-dark);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.hero-carousel-content a {
+  font: var(--font-weight-semibold) 14px/1.4 var(--font-family-cta);
+  color: var(--color-primary-link);
+  text-decoration: none;
+}
+
+.hero-carousel-content a:hover {
+  text-decoration: underline;
 }
 
 /* Video metadata — hidden */
@@ -94,30 +132,9 @@
   display: none;
 }
 
-/* CTA wrapper cell */
+/* CTA wrapper cell — hidden in grid, part of card */
 .hero-carousel-cta-wrapper {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-.hero-carousel-cta {
-  font-family: var(--font-family-cta);
-  font-weight: var(--font-weight-bold);
-  font-size: 24px;
-  line-height: 24px;
-  letter-spacing: 1px;
-  color: var(--color-bg-white);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.hero-carousel-cta:hover {
-  text-decoration: underline;
-}
-
-.hero-carousel-cta:focus-visible {
-  outline: 2px solid var(--color-primary-light);
-  outline-offset: 2px;
+  display: none;
 }
 
 /* 8. Controls */
@@ -126,14 +143,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg) 0 var(--spacing-xl);
+  padding: var(--spacing-lg) 0 var(--spacing-sm);
 }
 
 .hero-carousel-prev,
 .hero-carousel-next {
   background: none;
   border: none;
-  color: var(--color-bg-white);
+  color: var(--color-primary-light);
   font-size: 32px;
   cursor: pointer;
   padding: var(--spacing-sm);
@@ -187,37 +204,22 @@
 /* 10. Media queries (mobile) */
 @media (width <= 767px) {
   .hero-carousel-slide {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-xl) var(--spacing-md);
-  }
-
-  .hero-carousel-media {
-    grid-row: auto;
-    grid-column: auto;
+    min-height: 350px;
   }
 
   .hero-carousel-content {
-    grid-column: auto;
-    grid-row: auto;
-    max-width: 100%;
-    align-items: center;
-    text-align: center;
-    font-size: 16px;
+    width: auto;
+    max-width: 85%;
+    margin: var(--spacing-xl) auto;
+    padding: var(--spacing-lg);
   }
 
-  .hero-carousel-cta-wrapper {
-    grid-column: auto;
-    grid-row: auto;
-    text-align: center;
-  }
-
-  .hero-carousel-cta {
-    font-size: 20px;
+  .hero-carousel-edition-bar {
+    font-size: 14px;
+    flex-wrap: wrap;
   }
 
   .hero-carousel-controls {
-    padding: var(--spacing-md) 0 var(--spacing-lg);
+    padding: var(--spacing-md) 0 var(--spacing-sm);
   }
 }

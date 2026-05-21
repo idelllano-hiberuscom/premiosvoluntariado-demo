@@ -3,19 +3,35 @@
  *
  * Model: xwalk (EDS + Universal Editor)
  * xwalk DOM:
- *   Row 0 (config): 1 cell [editionLabel text]
- *   Rows 1+ (items): 4 cells [picture], [title text], [videoUrl text], [cta <a>]
+ *   Container field rows (1 cell): editionLabel
+ *   Item rows (2+ cells): [image], [title], [videoUrl], [ctaText], [cta]
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
   const rows = [...block.children];
-  const configRow = rows[0];
-  const slideRows = rows.slice(1);
+
+  // Adaptive detection: single-cell = container field, multi-cell = item
+  const configFields = [];
+  const slideRows = [];
+
+  rows.forEach((row) => {
+    if (row.children.length >= 2) {
+      slideRows.push(row);
+    } else {
+      configFields.push(row);
+    }
+  });
+
   const totalSlides = slideRows.length;
 
-  // Config row — visually hidden, preserved for UE editing
-  configRow.classList.add('hero-carousel-config');
+  // Extract edition label from container fields
+  let editionLabel = '';
+  configFields.forEach((row) => {
+    const text = row.textContent.trim();
+    if (text && !editionLabel) editionLabel = text;
+    row.classList.add('hero-carousel-config');
+  });
 
   // Viewport and track
   const viewport = document.createElement('div');
@@ -53,7 +69,7 @@ export default function decorate(block) {
       }
     }
 
-    // Cell 1: title text
+    // Cell 1: title text — displayed in the white card
     if (cols[1]) {
       cols[1].classList.add('hero-carousel-content');
     }
@@ -64,11 +80,15 @@ export default function decorate(block) {
       cols[2].hidden = true;
     }
 
-    // Cell 3: CTA link
+    // Cell 3: CTA text (hidden in slide, shown in card if needed)
     if (cols[3]) {
       cols[3].classList.add('hero-carousel-cta-wrapper');
-      const link = cols[3].querySelector('a');
-      if (link) link.classList.add('hero-carousel-cta');
+      cols[3].hidden = true;
+    }
+
+    // Cell 4: CTA url (hidden metadata)
+    if (cols[4]) {
+      cols[4].hidden = true;
     }
 
     track.append(row);
@@ -109,7 +129,33 @@ export default function decorate(block) {
   }
 
   controls.append(prevBtn, dotsContainer, nextBtn);
-  block.append(viewport, controls);
+
+  // Edition bar below controls
+  const editionBar = document.createElement('div');
+  editionBar.classList.add('hero-carousel-edition-bar');
+
+  if (editionLabel) {
+    const labelSpan = document.createElement('span');
+    labelSpan.classList.add('edition-label');
+    labelSpan.textContent = editionLabel;
+    editionBar.append(labelSpan);
+
+    // Separator + active slide title
+    const sep = document.createElement('span');
+    sep.classList.add('edition-separator');
+    editionBar.append(sep);
+  }
+
+  const slideTitleSpan = document.createElement('span');
+  slideTitleSpan.classList.add('edition-slide-title');
+  if (slideRows[0]) {
+    const firstContent = slideRows[0].querySelector('.hero-carousel-content');
+    if (firstContent) slideTitleSpan.textContent = firstContent.textContent.trim();
+  }
+  editionBar.append(slideTitleSpan);
+
+  block.textContent = '';
+  block.append(viewport, controls, editionBar);
 
   block.setAttribute('role', 'region');
   block.setAttribute('aria-label', 'Hero carousel');
@@ -119,13 +165,15 @@ export default function decorate(block) {
   block.dataset.aueModel = 'hero-carousel';
   block.dataset.aueLabel = 'Hero Carousel';
 
-  // Config row
-  const configCell = configRow.children[0];
-  if (configCell) {
-    configCell.dataset.aueProp = 'editionLabel';
-    configCell.dataset.aueType = 'text';
-    configCell.dataset.aueLabel = 'Edición';
-  }
+  // Config fields UE instrumentation
+  configFields.forEach((row) => {
+    const cell = row.children[0];
+    if (cell) {
+      cell.dataset.aueProp = 'editionLabel';
+      cell.dataset.aueType = 'text';
+      cell.dataset.aueLabel = 'Edición';
+    }
+  });
 
   // Track as container
   if (block.dataset.aueResource) {
@@ -176,6 +224,11 @@ export default function decorate(block) {
     dots[newIndex].setAttribute('aria-selected', 'true');
 
     track.style.transform = `translateX(-${newIndex * 100}%)`;
+
+    // Update edition bar slide title
+    const newContent = slideRows[newIndex].querySelector('.hero-carousel-content');
+    if (newContent) slideTitleSpan.textContent = newContent.textContent.trim();
+
     currentIndex = newIndex;
   }
 
