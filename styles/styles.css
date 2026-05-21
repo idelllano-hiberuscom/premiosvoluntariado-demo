@@ -314,7 +314,10 @@ main .section.highlight {
 
 /* Full-bleed blocks — break out of max-width wrapper */
 main > .section > .hero-carousel-wrapper,
-main > .section > .contact-bar-wrapper {
+main > .section > .contact-bar-wrapper,
+main > .section > .intro-year-wrapper,
+main > .section > .blog-cards-wrapper,
+main > .section > .vidas-cruzadas-wrapper {
   max-width: none;
   padding: 0;
 }

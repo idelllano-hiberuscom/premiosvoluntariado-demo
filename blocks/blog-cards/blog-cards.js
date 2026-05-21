@@ -1,14 +1,10 @@
 /**
  * Blog Cards Block — AEM Edge Delivery Services
  *
- * Figma reference: 1:496 (desktop), 1:192 (mobile)
  * Model: xwalk (EDS + Universal Editor)
- * UE instrumentation: ✅ Completado (Fase 3)
- * QA audit: ✅ Validado
- *
- * QA Changes:
- * - Añadida instrumentación UE completa (xwalk)
- * - Import moveInstrumentation para copiar attrs AEM en items
+ * xwalk DOM (container):
+ *   Row 0 (config): 4 cells [picture logo], [title text], [subtitle text], [heading text]
+ *   Rows 1+ (items): 4 cells [picture], [<a> linkText+link], [date text], [excerpt text]
  *
  * @param {Element} block - Root element of the block
  */
@@ -17,54 +13,103 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 export default function decorate(block) {
   const rows = [...block.children];
 
-  // --- Row 0: Header (logo + intro) ---
+  // --- Row 0: Config/Header ---
   const headerRow = rows[0];
   headerRow.classList.add('blog-cards-header');
-  const [logoCol, introCol] = [...headerRow.children];
-  logoCol.classList.add('blog-cards-logo');
+  const headerCols = [...headerRow.children];
 
-  // UE: logo
-  const logoPicture = logoCol.querySelector('picture');
-  if (logoPicture) {
-    logoPicture.dataset.aueProp = 'logo';
-    logoPicture.dataset.aueType = 'media';
-    logoPicture.dataset.aueLabel = 'Logo blog';
-  }
+  // Cell 0: logo picture
+  const logoCell = headerCols[0];
+  if (logoCell) logoCell.classList.add('blog-cards-logo');
 
-  if (introCol) {
-    introCol.classList.add('blog-cards-intro');
-    const titleEl = introCol.querySelector('h2');
-    if (titleEl) {
-      titleEl.classList.add('blog-cards-title');
-      titleEl.dataset.aueProp = 'title';
-      titleEl.dataset.aueType = 'text';
-      titleEl.dataset.aueLabel = 'Título blog';
-    }
-    const subtitleEl = introCol.querySelector('p');
-    if (subtitleEl) {
-      subtitleEl.classList.add('blog-cards-subtitle');
-      subtitleEl.dataset.aueProp = 'subtitle';
-      subtitleEl.dataset.aueType = 'text';
-      subtitleEl.dataset.aueLabel = 'Subtítulo';
-    }
-  }
+  // Cell 1: blog title
+  const titleCell = headerCols[1];
+  if (titleCell) titleCell.classList.add('blog-cards-title');
 
-  // --- Row 1: Section title ---
-  const sectionRow = rows[1];
-  sectionRow.classList.add('blog-cards-section-title');
-  const sectionH3 = sectionRow.querySelector('h3');
-  if (sectionH3) {
-    sectionH3.dataset.aueProp = 'heading';
-    sectionH3.dataset.aueType = 'text';
-    sectionH3.dataset.aueLabel = 'Título sección';
-  }
+  // Cell 2: subtitle
+  const subtitleCell = headerCols[2];
+  if (subtitleCell) subtitleCell.classList.add('blog-cards-subtitle');
 
-  // --- Rows 2+: Post items → new <ul> + <li> structure ---
+  // Cell 3: section heading
+  const headingCell = headerCols[3];
+  if (headingCell) headingCell.classList.add('blog-cards-section-heading');
+
+  // --- Rows 1+: Post items ---
   const grid = document.createElement('ul');
   grid.classList.add('blog-cards-grid');
   grid.setAttribute('aria-label', 'Últimos artículos del blog');
 
-  // UE: grid container (copy block resource for container editing)
+  for (let i = 1; i < rows.length; i += 1) {
+    const row = rows[i];
+    const cols = [...row.children];
+    const li = document.createElement('li');
+    li.classList.add('blog-cards-item');
+    moveInstrumentation(row, li);
+
+    // Cell 0: image
+    if (cols[0]) {
+      cols[0].classList.add('blog-cards-image');
+      li.append(cols[0]);
+    }
+
+    // Cell 1: link (title + href collapsed)
+    if (cols[1]) {
+      cols[1].classList.add('blog-cards-item-title');
+      li.append(cols[1]);
+    }
+
+    // Cell 2: date
+    if (cols[2]) {
+      cols[2].classList.add('blog-cards-date');
+      li.append(cols[2]);
+    }
+
+    // Cell 3: excerpt
+    if (cols[3]) {
+      cols[3].classList.add('blog-cards-excerpt');
+      li.append(cols[3]);
+    }
+
+    grid.append(li);
+    row.remove();
+  }
+
+  block.append(grid);
+
+  // Lazy images
+  block.querySelectorAll('picture img').forEach((img) => {
+    img.setAttribute('loading', 'lazy');
+    img.setAttribute('decoding', 'async');
+  });
+
+  // --- UE instrumentation (xwalk) ---
+  block.dataset.aueType = 'component';
+  block.dataset.aueModel = 'blog-cards';
+  block.dataset.aueLabel = 'Blog Cards';
+
+  // Config cells
+  if (logoCell) {
+    logoCell.dataset.aueProp = 'logo';
+    logoCell.dataset.aueType = 'media';
+    logoCell.dataset.aueLabel = 'Logo';
+  }
+  if (titleCell) {
+    titleCell.dataset.aueProp = 'title';
+    titleCell.dataset.aueType = 'text';
+    titleCell.dataset.aueLabel = 'Título blog';
+  }
+  if (subtitleCell) {
+    subtitleCell.dataset.aueProp = 'subtitle';
+    subtitleCell.dataset.aueType = 'text';
+    subtitleCell.dataset.aueLabel = 'Subtítulo';
+  }
+  if (headingCell) {
+    headingCell.dataset.aueProp = 'heading';
+    headingCell.dataset.aueType = 'text';
+    headingCell.dataset.aueLabel = 'Título sección';
+  }
+
+  // Grid container
   if (block.dataset.aueResource) {
     grid.dataset.aueResource = block.dataset.aueResource;
   }
@@ -73,72 +118,35 @@ export default function decorate(block) {
   grid.dataset.aueLabel = 'Posts';
   grid.dataset.aueBehavior = 'component';
 
-  for (let i = 2; i < rows.length; i += 1) {
-    const row = rows[i];
-    const cols = [...row.children];
-    const li = document.createElement('li');
-    li.classList.add('blog-cards-item');
-
-    // UE: copy AEM-injected instrumentation from original row to new li
-    moveInstrumentation(row, li);
+  // Items
+  grid.querySelectorAll('.blog-cards-item').forEach((li, index) => {
     li.dataset.aueType = 'component';
     li.dataset.aueModel = 'blog-cards-item';
-    li.dataset.aueLabel = `Post ${i - 1}`;
+    li.dataset.aueLabel = `Post ${index + 1}`;
 
-    // Col 0: image
-    const imageWrapper = document.createElement('div');
-    imageWrapper.classList.add('blog-cards-image');
-    const picture = cols[0] && cols[0].querySelector('picture');
-    if (picture) {
-      picture.dataset.aueProp = 'image';
-      picture.dataset.aueType = 'media';
-      picture.dataset.aueLabel = 'Imagen';
-      imageWrapper.appendChild(picture);
+    const imgCell = li.querySelector('.blog-cards-image');
+    if (imgCell) {
+      imgCell.dataset.aueProp = 'image';
+      imgCell.dataset.aueType = 'media';
+      imgCell.dataset.aueLabel = 'Imagen';
     }
-    li.appendChild(imageWrapper);
-
-    // Col 1: h4 + date (first p) + excerpt (second p)
-    if (cols[1]) {
-      const heading = cols[1].querySelector('h4');
-      if (heading) {
-        heading.classList.add('blog-cards-item-title');
-        heading.dataset.aueProp = 'linkText';
-        heading.dataset.aueType = 'text';
-        heading.dataset.aueLabel = 'Título post';
-        li.appendChild(heading);
-      }
-
-      const paragraphs = cols[1].querySelectorAll('p');
-      if (paragraphs[0]) {
-        paragraphs[0].classList.add('blog-cards-date');
-        paragraphs[0].dataset.aueProp = 'date';
-        paragraphs[0].dataset.aueType = 'text';
-        paragraphs[0].dataset.aueLabel = 'Fecha';
-        li.appendChild(paragraphs[0]);
-      }
-      if (paragraphs[1]) {
-        paragraphs[1].classList.add('blog-cards-excerpt');
-        paragraphs[1].dataset.aueProp = 'excerpt';
-        paragraphs[1].dataset.aueType = 'text';
-        paragraphs[1].dataset.aueLabel = 'Extracto';
-        li.appendChild(paragraphs[1]);
-      }
+    const linkCell = li.querySelector('.blog-cards-item-title');
+    if (linkCell) {
+      linkCell.dataset.aueProp = 'linkText';
+      linkCell.dataset.aueType = 'text';
+      linkCell.dataset.aueLabel = 'Título post';
     }
-
-    grid.appendChild(li);
-    row.remove();
-  }
-
-  block.appendChild(grid);
-
-  // UE: block-level component instrumentation
-  block.dataset.aueType = 'component';
-  block.dataset.aueModel = 'blog-cards';
-  block.dataset.aueLabel = 'Blog Cards';
-
-  // All images lazy (block is below-the-fold)
-  block.querySelectorAll('picture img').forEach((img) => {
-    img.setAttribute('loading', 'lazy');
-    img.setAttribute('decoding', 'async');
+    const dateCell = li.querySelector('.blog-cards-date');
+    if (dateCell) {
+      dateCell.dataset.aueProp = 'date';
+      dateCell.dataset.aueType = 'text';
+      dateCell.dataset.aueLabel = 'Fecha';
+    }
+    const excerptCell = li.querySelector('.blog-cards-excerpt');
+    if (excerptCell) {
+      excerptCell.dataset.aueProp = 'excerpt';
+      excerptCell.dataset.aueType = 'text';
+      excerptCell.dataset.aueLabel = 'Extracto';
+    }
   });
 }

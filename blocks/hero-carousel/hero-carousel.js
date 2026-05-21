@@ -1,36 +1,30 @@
 /**
  * Hero Carousel Block — AEM Edge Delivery Services
  *
- * Figma reference: 1:325 (desktop), 1:3 (mobile)
  * Model: xwalk (EDS + Universal Editor)
- * UE instrumentation: ✅ Completado (Fase 3)
- * QA audit: ✅ Validado
- *
- * QA Changes:
- * - Añadida instrumentación UE xwalk completa
- * - Restaurado data-aue-filter en track tras append de slides
+ * xwalk DOM:
+ *   Row 0 (config): 1 cell [editionLabel text]
+ *   Rows 1+ (items): 4 cells [picture], [title text], [videoUrl text], [cta <a>]
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
   const rows = [...block.children];
-
-  // Fila 0 = configuración (editionLabel), filas 1+ = slides
   const configRow = rows[0];
   const slideRows = rows.slice(1);
   const totalSlides = slideRows.length;
 
-  // Clasificar config row (oculta visualmente, preservada para UE)
+  // Config row — visually hidden, preserved for UE editing
   configRow.classList.add('hero-carousel-config');
 
-  // Crear viewport y track (elementos NUEVOS)
+  // Viewport and track
   const viewport = document.createElement('div');
   viewport.classList.add('hero-carousel-viewport');
 
   const track = document.createElement('div');
   track.classList.add('hero-carousel-track');
 
-  // Procesar cada slide — mover nodos existentes al track
+  // Process slides
   slideRows.forEach((row, index) => {
     row.classList.add('hero-carousel-slide');
     row.setAttribute('role', 'tabpanel');
@@ -44,8 +38,7 @@ export default function decorate(block) {
     }
 
     const cols = [...row.children];
-
-    // Col 0 = media (picture ya en DOM)
+    // Cell 0: picture
     if (cols[0]) {
       cols[0].classList.add('hero-carousel-media');
       const img = cols[0].querySelector('picture img');
@@ -60,22 +53,30 @@ export default function decorate(block) {
       }
     }
 
-    // Col 1 = content (título + CTA)
+    // Cell 1: title text
     if (cols[1]) {
       cols[1].classList.add('hero-carousel-content');
-      const heading = cols[1].querySelector('h2');
-      if (heading) heading.classList.add('hero-carousel-title');
-      const link = cols[1].querySelector('a');
+    }
+
+    // Cell 2: videoUrl (hidden metadata)
+    if (cols[2]) {
+      cols[2].classList.add('hero-carousel-video-meta');
+      cols[2].hidden = true;
+    }
+
+    // Cell 3: CTA link
+    if (cols[3]) {
+      cols[3].classList.add('hero-carousel-cta-wrapper');
+      const link = cols[3].querySelector('a');
       if (link) link.classList.add('hero-carousel-cta');
     }
 
-    // Mover slide existente al track (no destruye, reordena)
     track.append(row);
   });
 
   viewport.append(track);
 
-  // Crear controles (elementos NUEVOS — no existen en DOM original)
+  // Controls
   const controls = document.createElement('div');
   controls.classList.add('hero-carousel-controls');
 
@@ -108,30 +109,25 @@ export default function decorate(block) {
   }
 
   controls.append(prevBtn, dotsContainer, nextBtn);
-
-  // Insertar nuevas estructuras en el bloque (después del config row)
   block.append(viewport, controls);
 
-  // Accesibilidad del contenedor
   block.setAttribute('role', 'region');
   block.setAttribute('aria-label', 'Hero carousel');
 
-  // --- INSTRUMENTACIÓN UE (xwalk) ---
-
-  // Bloque raíz — AEM ya inyecta data-aue-resource en block
+  // --- UE instrumentation (xwalk) ---
   block.dataset.aueType = 'component';
   block.dataset.aueModel = 'hero-carousel';
   block.dataset.aueLabel = 'Hero Carousel';
 
-  // Config row — editionLabel editable desde panel UE
-  const configText = configRow.querySelector('p');
-  if (configText) {
-    configText.dataset.aueProp = 'editionLabel';
-    configText.dataset.aueType = 'text';
-    configText.dataset.aueLabel = 'Edición (ej: XIII, 2025)';
+  // Config row
+  const configCell = configRow.children[0];
+  if (configCell) {
+    configCell.dataset.aueProp = 'editionLabel';
+    configCell.dataset.aueType = 'text';
+    configCell.dataset.aueLabel = 'Edición';
   }
 
-  // Track como contenedor de slides repetibles
+  // Track as container
   if (block.dataset.aueResource) {
     track.dataset.aueResource = block.dataset.aueResource;
   }
@@ -139,67 +135,50 @@ export default function decorate(block) {
   track.dataset.aueFilter = 'hero-carousel-item';
   track.dataset.aueBehavior = 'component';
 
-  // Slides: los nodos movidos con append conservan data-aue-resource de AEM.
-  slideRows.forEach((row, slideIndex) => {
+  // Slides (moved nodes preserve AEM-injected attrs)
+  slideRows.forEach((row, i) => {
     row.dataset.aueType = 'component';
     row.dataset.aueModel = 'hero-carousel-item';
-    row.dataset.aueLabel = `Slide ${slideIndex + 1}`;
+    row.dataset.aueLabel = `Slide ${i + 1}`;
 
     const cols = [...row.children];
-
-    // Imagen
     if (cols[0]) {
-      const picture = cols[0].querySelector('picture');
-      if (picture) {
-        picture.dataset.aueProp = 'image';
-        picture.dataset.aueType = 'media';
-        picture.dataset.aueLabel = 'Imagen del slide';
-      }
+      cols[0].dataset.aueProp = 'image';
+      cols[0].dataset.aueType = 'media';
+      cols[0].dataset.aueLabel = 'Imagen';
     }
-
-    // Título + CTA
     if (cols[1]) {
-      const heading = cols[1].querySelector('h2');
-      if (heading) {
-        heading.dataset.aueProp = 'title';
-        heading.dataset.aueType = 'text';
-        heading.dataset.aueLabel = 'Título del slide';
-      }
-      const link = cols[1].querySelector('a');
-      if (link) {
-        link.dataset.aueProp = 'ctaText';
-        link.dataset.aueType = 'text';
-        link.dataset.aueLabel = 'Texto del CTA';
-      }
+      cols[1].dataset.aueProp = 'title';
+      cols[1].dataset.aueType = 'text';
+      cols[1].dataset.aueLabel = 'Título';
+    }
+    if (cols[3]) {
+      cols[3].dataset.aueProp = 'ctaText';
+      cols[3].dataset.aueType = 'text';
+      cols[3].dataset.aueLabel = 'CTA';
     }
   });
 
-  // — Lógica de navegación —
+  // --- Navigation logic ---
   let currentIndex = 0;
 
   function goTo(index) {
     const newIndex = (index + totalSlides) % totalSlides;
-
-    // Actualizar slides
     slideRows[currentIndex].classList.remove('hero-carousel-slide--active');
     slideRows[currentIndex].setAttribute('aria-hidden', 'true');
     slideRows[newIndex].classList.add('hero-carousel-slide--active');
     slideRows[newIndex].setAttribute('aria-hidden', 'false');
 
-    // Actualizar dots
     const dots = dotsContainer.children;
     dots[currentIndex].classList.remove('hero-carousel-dot--active');
     dots[currentIndex].setAttribute('aria-selected', 'false');
     dots[newIndex].classList.add('hero-carousel-dot--active');
     dots[newIndex].setAttribute('aria-selected', 'true');
 
-    // Mover track con transform
     track.style.transform = `translateX(-${newIndex * 100}%)`;
-
     currentIndex = newIndex;
   }
 
-  // Delegación de eventos en controles
   controls.addEventListener('click', (e) => {
     if (e.target.closest('.hero-carousel-prev')) {
       goTo(currentIndex - 1);
@@ -214,7 +193,6 @@ export default function decorate(block) {
     }
   });
 
-  // Navegación por teclado
   controls.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
     if (e.key === 'ArrowRight') goTo(currentIndex + 1);

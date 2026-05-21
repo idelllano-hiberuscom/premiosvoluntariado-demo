@@ -1,66 +1,58 @@
 /**
  * Intro Year Block — Styles
- * Figma reference: Sección año de edición actual
  * Model: xwalk (EDS + Universal Editor)
  */
 
-/* 1. Variables locales + Contenedor raíz */
+/* Container */
 .intro-year {
-  --intro-year-max-width: 1160px;
-
   background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   padding: var(--spacing-4xl) var(--spacing-2xl);
 }
 
-/* 3. Fila */
-.intro-year-row {
+/* Row layout */
+.intro-year-content {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-3xl);
-  max-width: var(--intro-year-max-width);
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-width: 1160px;
   margin: 0 auto;
 }
 
-/* 4. Columna media */
-.intro-year-media {
-  flex-shrink: 0;
-}
-
+/* Logo */
 .intro-year-media img {
   width: 150px;
-  height: 143px;
+  height: auto;
   display: block;
 }
 
-/* 5. Columna contenido */
-.intro-year-content {
-  flex: 1;
-}
-
-.intro-year-heading {
+/* Year */
+.intro-year-year {
   font: var(--font-weight-light) 40px/1 var(--font-family-heading);
   color: var(--color-bg-white);
-  margin: 0 0 var(--spacing-md);
 }
 
-.intro-year-body {
+/* Description */
+.intro-year-description {
   font: var(--font-weight-regular) 20px/1.5 var(--font-family-heading);
   color: var(--color-bg-white);
+}
+
+.intro-year-description p {
   margin: 0;
 }
 
-/* 8. Media queries (mobile) */
+/* Mobile */
 @media (width <= 767px) {
-  .intro-year-row {
-    flex-direction: column;
+  .intro-year-content {
+    align-items: center;
     text-align: center;
   }
 
-  .intro-year-heading {
+  .intro-year-year {
     font-size: 32px;
   }
 
-  .intro-year-body {
+  .intro-year-description {
     font-size: 18px;
   }
 }

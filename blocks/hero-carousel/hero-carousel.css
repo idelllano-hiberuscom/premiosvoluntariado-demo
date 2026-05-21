@@ -43,8 +43,10 @@
 /* 5. Slides */
 .hero-carousel-slide {
   min-width: 100%;
-  display: flex;
-  gap: var(--spacing-2xl);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: var(--spacing-sm) var(--spacing-2xl);
   align-items: center;
   padding: var(--spacing-4xl) var(--spacing-2xl);
   box-sizing: border-box;
@@ -52,7 +54,8 @@
 
 /* 6. Media (columna imagen) */
 .hero-carousel-media {
-  flex: 1;
+  grid-row: 1 / -1;
+  grid-column: 1;
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -71,23 +74,30 @@
   display: block;
 }
 
-/* 7. Content (columna texto) */
+/* 7. Content (title cell) */
 .hero-carousel-content {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: var(--spacing-md);
-  flex: 0 0 auto;
+  justify-content: flex-end;
   max-width: 320px;
-}
-
-.hero-carousel-title {
   font-family: var(--font-family-cta);
   font-weight: var(--font-weight-semibold);
   font-size: 18px;
   line-height: 24px;
   color: var(--color-bg-white);
-  margin: 0;
+}
+
+/* Video metadata — hidden */
+.hero-carousel-video-meta {
+  display: none;
+}
+
+/* CTA wrapper cell */
+.hero-carousel-cta-wrapper {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .hero-carousel-cta {
@@ -177,24 +187,30 @@
 /* 10. Media queries (mobile) */
 @media (width <= 767px) {
   .hero-carousel-slide {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     gap: var(--spacing-lg);
     padding: var(--spacing-xl) var(--spacing-md);
   }
 
   .hero-carousel-media {
-    width: 100%;
-    flex: none;
+    grid-row: auto;
+    grid-column: auto;
   }
 
   .hero-carousel-content {
+    grid-column: auto;
+    grid-row: auto;
     max-width: 100%;
     align-items: center;
     text-align: center;
+    font-size: 16px;
   }
 
-  .hero-carousel-title {
-    font-size: 16px;
+  .hero-carousel-cta-wrapper {
+    grid-column: auto;
+    grid-row: auto;
+    text-align: center;
   }
 
   .hero-carousel-cta {

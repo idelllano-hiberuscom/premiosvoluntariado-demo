@@ -34,6 +34,9 @@
 .blog-cards-title {
   font: var(--font-weight-regular) 32px/40px var(--font-family-heading);
   color: var(--color-text-dark);
+}
+
+.blog-cards-title p {
   margin: 0;
 }
 
@@ -41,16 +44,20 @@
   font: var(--font-weight-regular) 24px/30px var(--font-family-heading);
   color: var(--color-primary-link);
   text-align: center;
+}
+
+.blog-cards-subtitle p {
   margin: 0;
 }
 
-/* Section title bar */
-.blog-cards-section-title {
+/* Section heading cell */
+.blog-cards-section-heading {
   background: var(--color-primary-lighter);
   padding: var(--spacing-4xl) var(--spacing-xl);
+  width: 100%;
 }
 
-.blog-cards-section-title h3 {
+.blog-cards-section-heading p {
   font: var(--font-weight-regular) 28px/36px var(--font-family-heading);
   color: var(--color-text-dark);
   margin: 0;

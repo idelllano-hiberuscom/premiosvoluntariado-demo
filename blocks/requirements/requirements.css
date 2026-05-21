@@ -38,7 +38,7 @@
   border-bottom: 3px solid var(--color-bg-divider);
 }
 
-.requirements-card-title {
+.requirements-card-header > p {
   font: var(--font-weight-regular) 26px/36px var(--font-family-heading);
   color: var(--color-primary-dark);
   margin: 0;
@@ -48,6 +48,10 @@
   font: var(--font-weight-regular) 16px/24px var(--font-family-body);
   color: var(--color-text-body);
   margin: var(--spacing-sm) 0 0;
+}
+
+.requirements-card-subtitle p {
+  margin: 0;
 }
 
 /* Checklist */

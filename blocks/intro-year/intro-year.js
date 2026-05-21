@@ -1,71 +1,52 @@
 /**
  * Intro Year Block — AEM Edge Delivery Services
  *
- * Figma reference: Sección año de edición actual
  * Model: xwalk (EDS + Universal Editor)
- * UE instrumentation: ✅ Completado (Fase 3)
- * QA audit: ✅ Validado
- *
- * QA Changes:
- * - Añadida instrumentación UE xwalk (data-aue-*)
+ * xwalk DOM: 1 row, 3 cells: [picture(logo)], [year text], [richtext description]
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
-  const rows = [...block.children];
+  const row = block.children[0];
+  if (!row) return;
 
-  rows.forEach((row) => {
-    row.classList.add('intro-year-row');
-    const cols = [...row.children];
+  const cols = [...row.children];
+  const mediaCell = cols[0]; // <picture>
+  const yearCell = cols[1]; // <p>2025</p>
+  const descCell = cols[2]; // richtext paragraphs
 
-    cols.forEach((col, colIndex) => {
-      if (colIndex === 0) {
-        col.classList.add('intro-year-media');
-      } else {
-        col.classList.add('intro-year-content');
-      }
-    });
-  });
+  // Classify cells
+  if (mediaCell) mediaCell.classList.add('intro-year-media');
+  if (yearCell) yearCell.classList.add('intro-year-year');
+  if (descCell) descCell.classList.add('intro-year-description');
 
-  // Images — below-the-fold, lazy loading
+  // Wrap row for layout
+  row.classList.add('intro-year-content');
+
+  // Lazy-load images
   block.querySelectorAll('picture img').forEach((img) => {
     img.setAttribute('loading', 'lazy');
     img.setAttribute('decoding', 'async');
   });
 
-  // Classify text elements
-  block.querySelectorAll('.intro-year-content h2').forEach((h) => {
-    h.classList.add('intro-year-heading');
-  });
-
-  block.querySelectorAll('.intro-year-content p').forEach((p) => {
-    p.classList.add('intro-year-body');
-  });
-
-  // --- INSTRUMENTACIÓN UE (xwalk) ---
-
+  // --- UE instrumentation (xwalk) ---
   block.dataset.aueType = 'component';
   block.dataset.aueModel = 'intro-year';
   block.dataset.aueLabel = 'Intro Año';
 
-  const picture = block.querySelector('.intro-year-media picture');
-  if (picture) {
-    picture.dataset.aueProp = 'image';
-    picture.dataset.aueType = 'media';
-    picture.dataset.aueLabel = 'Logo';
+  if (mediaCell) {
+    mediaCell.dataset.aueProp = 'image';
+    mediaCell.dataset.aueType = 'media';
+    mediaCell.dataset.aueLabel = 'Logo';
   }
-
-  const heading = block.querySelector('.intro-year-heading');
-  if (heading) {
-    heading.dataset.aueProp = 'year';
-    heading.dataset.aueType = 'text';
-    heading.dataset.aueLabel = 'Año';
+  if (yearCell) {
+    yearCell.dataset.aueProp = 'year';
+    yearCell.dataset.aueType = 'text';
+    yearCell.dataset.aueLabel = 'Año';
   }
-
-  const body = block.querySelector('.intro-year-body');
-  if (body) {
-    body.dataset.aueProp = 'description';
-    body.dataset.aueType = 'richtext';
-    body.dataset.aueLabel = 'Descripción';
+  if (descCell) {
+    descCell.dataset.aueProp = 'description';
+    descCell.dataset.aueType = 'richtext';
+    descCell.dataset.aueLabel = 'Descripción';
   }
 }
