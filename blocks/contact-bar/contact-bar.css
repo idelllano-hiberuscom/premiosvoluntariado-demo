@@ -36,19 +36,14 @@
 .contact-bar-title {
   font: var(--font-weight-regular) 40px/40px var(--font-family-heading);
   color: var(--color-primary-light);
-}
-
-.contact-bar-title p {
   margin: 0;
+  font-style: italic;
 }
 
 /* Body text cell */
 .contact-bar-text {
   font: var(--font-weight-regular) 20px/30px var(--font-family-heading);
   color: var(--color-primary-lighter);
-}
-
-.contact-bar-text p {
   margin: 0;
 }
 
@@ -77,12 +72,6 @@
   background: var(--color-primary);
   border-color: var(--color-primary-lighter);
   outline: none;
-}
-
-/* Remove p margin inside action cells */
-.contact-bar-phone p,
-.contact-bar-email p {
-  margin: 0;
 }
 
 /* Mobile */
