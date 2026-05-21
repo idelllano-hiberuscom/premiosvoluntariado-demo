@@ -2,77 +2,75 @@
  * Contact Bar Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * xwalk DOM (ENTRADA):
- *   Row 0: [col A: <h2>title</h2>] [col B: <p>desc</p><p><a phone>...</a></p>]
- *   Row 1: [col A: <p><a email>...</a></p>]
+ * Model fields (6): title, description, phoneText, phone, emailText, email
+ * xwalk delivery: 1 row, 6 cells (one per model field, in order)
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
-  // Collect all cells across all rows
-  const allCells = [...block.querySelectorAll(':scope > div > div')];
+  const row = block.children[0];
+  if (!row) return;
 
-  // Find title: look for h2/h3 or the cell containing one
-  let titleEl = null;
-  let titleCell = null;
-  allCells.forEach((cell) => {
-    const heading = cell.querySelector('h2, h3');
-    if (heading && !titleEl) {
-      titleEl = heading;
-      titleCell = cell;
-    }
-  });
-
-  // Find all links (phone/email CTAs)
-  const links = [];
-  allCells.forEach((cell) => {
-    cell.querySelectorAll('a').forEach((a) => {
-      links.push(a);
-    });
-  });
-
-  // Find description: paragraphs that are NOT inside a link's parent and not in title cell
-  let descText = null;
-  allCells.forEach((cell) => {
-    if (cell === titleCell) return;
-    [...cell.querySelectorAll('p')].forEach((p) => {
-      if (!p.querySelector('a') && p.textContent.trim() && !descText) {
-        descText = p;
-      }
-    });
-  });
+  const cells = [...row.children];
+  // Positional access matching component-models.json field order
+  const titleCell = cells[0]; // title
+  const descCell = cells[1]; // description
+  const phoneTextCell = cells[2]; // phoneText (display label)
+  const phoneUrlCell = cells[3]; // phone (URL like tel:...)
+  const emailTextCell = cells[4]; // emailText (display label)
+  const emailUrlCell = cells[5]; // email (URL like mailto:...)
 
   // Build semantic layout
   const container = document.createElement('div');
   container.classList.add('contact-bar-container');
 
-  // Heading wrapper
+  // Heading
   const headingWrapper = document.createElement('div');
   headingWrapper.classList.add('contact-bar-heading');
-  if (titleEl) {
-    titleEl.classList.add('contact-bar-title');
-    headingWrapper.append(titleEl);
+  if (titleCell) {
+    const titleContent = titleCell.querySelector('h2, h3, p') || titleCell;
+    titleContent.classList.add('contact-bar-title');
+    headingWrapper.append(titleContent);
   }
 
-  // Body wrapper
+  // Body (description)
   const bodyWrapper = document.createElement('div');
   bodyWrapper.classList.add('contact-bar-body');
-  if (descText) {
-    descText.classList.add('contact-bar-text');
-    bodyWrapper.append(descText);
+  if (descCell) {
+    const descContent = descCell.querySelector('p') || descCell;
+    descContent.classList.add('contact-bar-text');
+    bodyWrapper.append(descContent);
   }
 
-  // Actions wrapper
+  // Actions — build <a> links from text+url pairs
   const actionsWrapper = document.createElement('div');
   actionsWrapper.classList.add('contact-bar-actions');
-  links.forEach((a) => {
-    a.classList.add('contact-bar-cta');
-    actionsWrapper.append(a);
-  });
+
+  // Phone CTA
+  const phoneText = phoneTextCell ? phoneTextCell.textContent.trim() : '';
+  const phoneUrl = phoneUrlCell ? phoneUrlCell.textContent.trim() : '';
+  if (phoneText) {
+    const phoneLink = document.createElement('a');
+    phoneLink.classList.add('contact-bar-cta');
+    phoneLink.textContent = phoneText;
+    phoneLink.href = phoneUrl || '#';
+    actionsWrapper.append(phoneLink);
+  }
+
+  // Email CTA
+  const emailText = emailTextCell ? emailTextCell.textContent.trim() : '';
+  const emailUrl = emailUrlCell ? emailUrlCell.textContent.trim() : '';
+  if (emailText) {
+    const emailLink = document.createElement('a');
+    emailLink.classList.add('contact-bar-cta');
+    emailLink.textContent = emailText;
+    emailLink.href = emailUrl || '#';
+    actionsWrapper.append(emailLink);
+  }
 
   container.append(headingWrapper, bodyWrapper, actionsWrapper);
 
-  // Remove original rows
-  [...block.querySelectorAll(':scope > div')].forEach((row) => row.remove());
+  // Replace original content
+  row.remove();
   block.append(container);
 }
