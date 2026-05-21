@@ -11,17 +11,73 @@
  */
 
 :root {
-  /* colors */
+  /* === Design tokens — Premios al Voluntariado === */
+
+  /* Colores primarios */
+  --color-primary-dark: #0a5182;
+  --color-primary: #008ec7;
+  --color-primary-light: #46bded;
+  --color-primary-lighter: #d2f2ff;
+  --color-primary-link: #177db1;
+
+  /* Colores neutrales */
+  --color-text-dark: #26446d;
+  --color-text-body: #65747c;
+  --color-text-muted: #899296;
+  --color-text-light: #6c828d;
+
+  /* Fondos */
+  --color-bg-white: #fff;
+  --color-bg-light: #f7f9f8;
+  --color-bg-grey: #eff3f8;
+  --color-bg-divider: #e5e5e5;
+
+  /* Sombras */
+  --shadow-card: 0 4px 4px rgb(38 68 109 / 10%);
+  --shadow-image: 15px 15px 0 0 rgb(165 165 165 / 20%);
+
+  /* Tipografías */
+  --font-family-heading: 'Rubik', sans-serif;
+  --font-family-body: 'Barlow Semi Condensed', sans-serif;
+  --font-family-cta: 'Barlow', sans-serif;
+
+  /* Pesos */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Espaciados */
+  --spacing-xs: 4px;
+  --spacing-sm: 10px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 50px;
+
+  /* Gaps */
+  --gap-items: 16px;
+  --gap-sections: 30px;
+  --gap-cards: 20px;
+
+  /* Border-radius */
+  --radius-pill: 2px;
+  --radius-none: 0;
+
+  /* colors (boilerplate compat) */
   --background-color: white;
   --light-color: #f8f8f8;
   --dark-color: #505050;
   --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  --link-color: #177db1;
+  --link-hover-color: #0a5182;
 
-  /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  /* fonts (boilerplate compat) */
+  --body-font-family: 'Barlow Semi Condensed', sans-serif;
+  --heading-font-family: 'Rubik', sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -254,4 +310,11 @@ main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+/* Full-bleed blocks — break out of max-width wrapper */
+main > .section > .hero-carousel-wrapper,
+main > .section > .contact-bar-wrapper {
+  max-width: none;
+  padding: 0;
 }
