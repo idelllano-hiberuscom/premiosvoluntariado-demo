@@ -13,6 +13,35 @@
   padding: var(--spacing-4xl) var(--spacing-2xl);
   max-width: 1160px;
   margin: 0 auto;
+  background: var(--color-primary-dark);
+  border-radius: 8px;
+}
+
+/* Info banner */
+.requirements-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--color-primary-light, #e8f4fd);
+  color: var(--color-primary-dark);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: 4px;
+  margin-bottom: var(--spacing-xl);
+  font: var(--font-weight-regular) 16px/24px var(--font-family-body);
+}
+
+.requirements-banner-icon::before {
+  content: '\2139';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary-dark);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 /* Grid layout */

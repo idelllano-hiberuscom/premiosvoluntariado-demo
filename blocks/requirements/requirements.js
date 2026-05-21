@@ -2,18 +2,48 @@
  * Requirements Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * xwalk DOM (container, no config fields):
- *   Each item row: 4 cells [title text], [subtitle text], [variant text], [content richtext]
+ * xwalk DOM (container with banner field + card items):
+ *   Container field rows: 1 cell (banner text)
+ *   Item rows: 4 cells [title], [subtitle], [variant], [content richtext]
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
   const rows = [...block.children];
 
+  // Separate container fields (1 cell) from item rows (multiple cells)
+  const containerFields = [];
+  const itemRows = [];
+
+  rows.forEach((row) => {
+    if (row.children.length >= 2) {
+      itemRows.push(row);
+    } else {
+      containerFields.push(row);
+    }
+  });
+
+  // Banner: first container field with text content
+  let bannerEl = null;
+  if (containerFields.length > 0) {
+    const bannerText = containerFields[0].textContent.trim();
+    if (bannerText) {
+      bannerEl = document.createElement('div');
+      bannerEl.classList.add('requirements-banner');
+      const icon = document.createElement('span');
+      icon.classList.add('requirements-banner-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      bannerEl.append(icon);
+      const text = document.createElement('span');
+      text.textContent = bannerText;
+      bannerEl.append(text);
+    }
+  }
+
   const grid = document.createElement('div');
   grid.classList.add('requirements-grid');
 
-  rows.forEach((row, rowIndex) => {
+  itemRows.forEach((row, rowIndex) => {
     const cols = [...row.children];
 
     // Cell 0: title
@@ -87,6 +117,8 @@ export default function decorate(block) {
     grid.append(row);
   });
 
+  block.textContent = '';
+  if (bannerEl) block.append(bannerEl);
   block.append(grid);
 
   // --- UE instrumentation (xwalk) ---

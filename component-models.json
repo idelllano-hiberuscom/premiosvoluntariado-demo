@@ -518,7 +518,14 @@
   },
   {
     "id": "requirements",
-    "fields": []
+    "fields": [
+      {
+        "component": "text",
+        "name": "banner",
+        "label": "Texto del banner informativo",
+        "valueType": "string"
+      }
+    ]
   },
   {
     "id": "requirements-card",

@@ -9,18 +9,20 @@
   padding: var(--spacing-4xl) var(--spacing-2xl);
 }
 
-/* Row layout — horizontal */
+/* Row layout — logo left + year/desc stacked right */
 .intro-year-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-3xl);
   max-width: 1160px;
   margin: 0 auto;
 }
 
-/* Logo */
+/* Logo — white card background */
 .intro-year-media {
   flex-shrink: 0;
+  background: var(--color-bg-white);
+  padding: var(--spacing-lg);
 }
 
 .intro-year-media img {
@@ -29,13 +31,14 @@
   display: block;
 }
 
-/* Year */
+/* Year + Description stacked vertically */
 .intro-year-year {
   font: var(--font-weight-light) 48px/1 var(--font-family-heading);
   color: var(--color-bg-white);
   background: var(--color-primary-dark);
   padding: var(--spacing-md) var(--spacing-xl);
-  flex-shrink: 0;
+  display: inline-block;
+  margin-bottom: var(--spacing-lg);
 }
 
 .intro-year-year p {
@@ -51,6 +54,14 @@
 
 .intro-year-description p {
   margin: 0;
+}
+
+/* Right column: year stacked above description */
+.intro-year-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Mobile */

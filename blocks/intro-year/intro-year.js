@@ -38,12 +38,16 @@ export default function decorate(block) {
   if (yearCell) yearCell.classList.add('intro-year-year');
   if (descCell) descCell.classList.add('intro-year-description');
 
-  // Build single-row flex layout
+  // Build layout: logo left + right column (year above description)
   const content = document.createElement('div');
   content.classList.add('intro-year-content');
   if (mediaCell) content.append(mediaCell);
-  if (yearCell) content.append(yearCell);
-  if (descCell) content.append(descCell);
+
+  const rightCol = document.createElement('div');
+  rightCol.classList.add('intro-year-right');
+  if (yearCell) rightCol.append(yearCell);
+  if (descCell) rightCol.append(descCell);
+  content.append(rightCol);
 
   block.textContent = '';
   block.append(content);
