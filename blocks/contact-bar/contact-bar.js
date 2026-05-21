@@ -2,23 +2,25 @@
  * Contact Bar Block — AEM Edge Delivery Services
  *
  * Model: xwalk (EDS + Universal Editor)
- * Model fields (6): title, description, phoneText, phone, emailText, email
- * xwalk delivery: 1 row, 6 cells (one per model field, in order)
+ * Handles multiple possible DOM structures:
+ *   - 1 cell with all content (h2 + p elements, some with <a>)
+ *   - Multiple cells (one per model field)
+ *   - Multiple rows
  *
  * @param {Element} block - Root element of the block
  */
 export default function decorate(block) {
-  const row = block.children[0];
-  if (!row) return;
+  // Gather all content elements from the block
+  const heading = block.querySelector('h2, h3');
+  const allLinks = [...block.querySelectorAll('a')];
+  const allParagraphs = [...block.querySelectorAll(':scope p')];
 
-  const cells = [...row.children];
-  // Positional access matching component-models.json field order
-  const titleCell = cells[0]; // title
-  const descCell = cells[1]; // description
-  const phoneTextCell = cells[2]; // phoneText (display label)
-  const phoneUrlCell = cells[3]; // phone (URL like tel:...)
-  const emailTextCell = cells[4]; // emailText (display label)
-  const emailUrlCell = cells[5]; // email (URL like mailto:...)
+  // Separate paragraphs: those with links vs plain text
+  const textParas = allParagraphs.filter((p) => !p.querySelector('a') && p.textContent.trim());
+
+  // Identify description: the longest plain paragraph (or first non-title one)
+  const descPara = textParas.find((p) => p.textContent.trim().length > 20)
+    || textParas.find((p) => p !== heading);
 
   // Build semantic layout
   const container = document.createElement('div');
@@ -27,50 +29,52 @@ export default function decorate(block) {
   // Heading
   const headingWrapper = document.createElement('div');
   headingWrapper.classList.add('contact-bar-heading');
-  if (titleCell) {
-    const titleContent = titleCell.querySelector('h2, h3, p') || titleCell;
-    titleContent.classList.add('contact-bar-title');
-    headingWrapper.append(titleContent);
+  if (heading) {
+    heading.classList.add('contact-bar-title');
+    headingWrapper.append(heading);
   }
 
   // Body (description)
   const bodyWrapper = document.createElement('div');
   bodyWrapper.classList.add('contact-bar-body');
-  if (descCell) {
-    const descContent = descCell.querySelector('p') || descCell;
-    descContent.classList.add('contact-bar-text');
-    bodyWrapper.append(descContent);
+  if (descPara) {
+    descPara.classList.add('contact-bar-text');
+    bodyWrapper.append(descPara);
   }
 
-  // Actions — build <a> links from text+url pairs
+  // Actions — use existing <a> links or build from remaining text
   const actionsWrapper = document.createElement('div');
   actionsWrapper.classList.add('contact-bar-actions');
 
-  // Phone CTA
-  const phoneText = phoneTextCell ? phoneTextCell.textContent.trim() : '';
-  const phoneUrl = phoneUrlCell ? phoneUrlCell.textContent.trim() : '';
-  if (phoneText) {
-    const phoneLink = document.createElement('a');
-    phoneLink.classList.add('contact-bar-cta');
-    phoneLink.textContent = phoneText;
-    phoneLink.href = phoneUrl || '#';
-    actionsWrapper.append(phoneLink);
-  }
-
-  // Email CTA
-  const emailText = emailTextCell ? emailTextCell.textContent.trim() : '';
-  const emailUrl = emailUrlCell ? emailUrlCell.textContent.trim() : '';
-  if (emailText) {
-    const emailLink = document.createElement('a');
-    emailLink.classList.add('contact-bar-cta');
-    emailLink.textContent = emailText;
-    emailLink.href = emailUrl || '#';
-    actionsWrapper.append(emailLink);
+  if (allLinks.length > 0) {
+    // Use actual links from the content
+    allLinks.forEach((a) => {
+      a.classList.remove('button');
+      a.classList.add('contact-bar-cta');
+      actionsWrapper.append(a);
+    });
+  } else {
+    // No links found — build from remaining text paragraphs
+    const ctaTexts = textParas.filter((p) => p !== descPara && p.textContent.trim());
+    ctaTexts.forEach((p) => {
+      const a = document.createElement('a');
+      a.classList.add('contact-bar-cta');
+      a.textContent = p.textContent.trim();
+      const text = p.textContent.trim();
+      if (text.includes('@')) {
+        a.href = `mailto:${text}`;
+      } else if (/\d{2,}/.test(text)) {
+        a.href = `tel:${text.replace(/[^\d+]/g, '')}`;
+      } else {
+        a.href = '#';
+      }
+      actionsWrapper.append(a);
+    });
   }
 
   container.append(headingWrapper, bodyWrapper, actionsWrapper);
 
-  // Replace original content
-  row.remove();
+  // Clear block and append new structure
+  block.textContent = '';
   block.append(container);
 }

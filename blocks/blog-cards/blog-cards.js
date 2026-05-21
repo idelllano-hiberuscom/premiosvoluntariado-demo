@@ -15,7 +15,6 @@ export default function decorate(block) {
 
   // --- Row 0: Config/Header ---
   const headerRow = rows[0];
-  headerRow.classList.add('blog-cards-header');
   const headerCols = [...headerRow.children];
 
   // Cell 0: logo picture
@@ -32,9 +31,24 @@ export default function decorate(block) {
 
   // Cell 3: section heading — move OUTSIDE header row
   const headingCell = headerCols[3];
+
+  // Rebuild header: logo left + text group centered
+  const headerContent = document.createElement('div');
+  headerContent.classList.add('blog-cards-header');
+  if (logoCell) headerContent.append(logoCell);
+  const textGroup = document.createElement('div');
+  textGroup.classList.add('blog-cards-header-text');
+  if (titleCell) textGroup.append(titleCell);
+  if (subtitleCell) textGroup.append(subtitleCell);
+  headerContent.append(textGroup);
+
+  // Replace original header row
+  headerRow.replaceWith(headerContent);
+
+  // Section heading as separate element below header
   if (headingCell) {
     headingCell.classList.add('blog-cards-section-heading');
-    headerRow.after(headingCell);
+    headerContent.after(headingCell);
   }
 
   // --- Rows 1+: Post items ---
@@ -55,7 +69,7 @@ export default function decorate(block) {
       li.append(cols[0]);
     }
 
-    // Cell 1: link (title + href collapsed)
+    // Cell 1: linkText (post title)
     if (cols[1]) {
       cols[1].classList.add('blog-cards-item-title');
       li.append(cols[1]);
@@ -71,6 +85,21 @@ export default function decorate(block) {
     if (cols[3]) {
       cols[3].classList.add('blog-cards-excerpt');
       li.append(cols[3]);
+    }
+
+    // Cell 4: link URL — combine with title cell to create an anchor
+    if (cols[4] && cols[1]) {
+      const url = cols[4].textContent.trim();
+      if (url) {
+        const titleP = cols[1].querySelector('p');
+        if (titleP && !titleP.querySelector('a')) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.textContent = titleP.textContent;
+          titleP.textContent = '';
+          titleP.append(a);
+        }
+      }
     }
 
     grid.append(li);
