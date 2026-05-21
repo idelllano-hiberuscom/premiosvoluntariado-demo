@@ -197,8 +197,8 @@ export default function decorate(block) {
     }
     if (cols[1]) {
       cols[1].dataset.aueProp = 'title';
-      cols[1].dataset.aueType = 'text';
-      cols[1].dataset.aueLabel = 'Título';
+      cols[1].dataset.aueType = 'richtext';
+      cols[1].dataset.aueLabel = 'Contenido card';
     }
     if (cols[3]) {
       cols[3].dataset.aueProp = 'ctaText';
