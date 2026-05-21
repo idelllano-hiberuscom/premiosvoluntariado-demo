@@ -1,0 +1,101 @@
+{
+  "definitions": [
+    {
+      "title": "Header",
+      "id": "header",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Header",
+              "model": "header",
+              "filter": "header"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Enlace social",
+      "id": "header-social-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Enlace social",
+              "model": "header-social-item"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "header",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "logoMain",
+          "label": "Logo principal",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "logoPartner",
+          "label": "Logo partner",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "logoMainUrl",
+          "label": "URL logo principal",
+          "value": "/"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "logoPartnerUrl",
+          "label": "URL logo partner"
+        }
+      ]
+    },
+    {
+      "id": "header-social-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "icon",
+          "label": "Icono red social",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "url",
+          "label": "URL red social"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "label",
+          "label": "Nombre red social"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "header",
+      "components": [
+        "header-social-item"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+/**
+ * Vidas Cruzadas Block — Styles
+ * Figma reference: 1:549 (desktop), 1:230 (mobile)
+ * Model: xwalk (EDS + Universal Editor)
+ */
+
+/* Container */
+.vidas-cruzadas {
+  background: var(--color-primary-lighter);
+  padding: var(--spacing-4xl) var(--spacing-md);
+}
+
+/* Hide original rows whose content has been moved to .vidas-cruzadas-body */
+.vidas-cruzadas > div:not(.vidas-cruzadas-header):not(.vidas-cruzadas-body) {
+  display: none;
+}
+
+/* Header — logo banner */
+.vidas-cruzadas-header {
+  background: var(--color-bg-white);
+  box-shadow: var(--shadow-card);
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.vidas-cruzadas-header > div {
+  display: flex;
+  justify-content: center;
+}
+
+.vidas-cruzadas-logo {
+  width: 300px;
+  height: 66px;
+}
+
+/* Body — flex container: text left + stories right */
+.vidas-cruzadas-body {
+  position: relative;
+  max-width: 1120px;
+  margin: var(--spacing-xl) auto 0;
+  padding: var(--spacing-2xl) 0;
+  display: flex;
+  gap: var(--spacing-4xl);
+}
+
+/* Text zone */
+.vidas-cruzadas-text {
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+.vidas-cruzadas-text p {
+  font: var(--font-weight-regular) 18px/30px var(--font-family-heading);
+  color: var(--color-text-dark);
+  margin: 0 0 var(--spacing-md);
+}
+
+/* CTA link */
+.vidas-cruzadas-cta {
+  font: var(--font-weight-medium) 18px/30px var(--font-family-heading);
+  color: var(--color-primary-link);
+  text-decoration: none;
+}
+
+.vidas-cruzadas-cta:hover,
+.vidas-cruzadas-cta:focus-visible {
+  text-decoration: underline;
+}
+
+/* Stories list */
+.vidas-cruzadas-stories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4xl);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Story item */
+.vidas-cruzadas-story {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-4xl);
+}
+
+/* Story image container */
+.vidas-cruzadas-story-image {
+  width: 265px;
+  height: 200px;
+  flex-shrink: 0;
+  border: 6px solid var(--color-bg-white);
+  box-shadow: var(--shadow-image);
+}
+
+.vidas-cruzadas-story-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Story title */
+.vidas-cruzadas-story-title {
+  font: var(--font-weight-regular) 24px/40px var(--font-family-heading);
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .vidas-cruzadas-body {
+    flex-direction: column;
+  }
+
+  .vidas-cruzadas-text {
+    max-width: 100%;
+  }
+
+  .vidas-cruzadas-story {
+    flex-direction: column;
+  }
+
+  .vidas-cruzadas-story-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 265 / 200;
+  }
+}

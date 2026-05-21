@@ -1,0 +1,84 @@
+{
+  "definitions": [
+    {
+      "title": "Requisitos",
+      "id": "requirements",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Requirements",
+              "model": "requirements"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tarjeta de Requisitos",
+      "id": "requirements-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Tarjeta de Requisitos",
+              "model": "requirements-card"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "requirements",
+      "fields": []
+    },
+    {
+      "id": "requirements-card",
+      "fields": [
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Título",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "subtitle",
+          "label": "Subtítulo",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "cardType",
+          "label": "Tipo de tarjeta",
+          "valueType": "string",
+          "required": true,
+          "options": [
+            { "name": "Checklist", "value": "checklist" },
+            { "name": "Enlaces", "value": "links" }
+          ]
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Contenido (lista)",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "requirements-card",
+      "components": [
+        "requirements-card"
+      ]
+    }
+  ]
+}

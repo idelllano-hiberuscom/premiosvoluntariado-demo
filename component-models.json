@@ -142,6 +142,80 @@
     ]
   },
   {
+    "id": "blog-cards",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "logo",
+        "label": "Logo del blog",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Título del blog",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "subtitle",
+        "label": "Subtítulo",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "sectionTitle",
+        "label": "Título de sección",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "blog-cards-item",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Imagen del post",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "postTitle",
+        "label": "Título del post",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "date",
+        "label": "Fecha",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "excerpt",
+        "label": "Extracto",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "url",
+        "label": "URL del post",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
@@ -180,12 +254,212 @@
     ]
   },
   {
+    "id": "contact-bar",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Título",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "description",
+        "label": "Texto descriptivo",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "phoneText",
+        "label": "Texto CTA teléfono",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "phoneUrl",
+        "label": "URL teléfono",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "emailText",
+        "label": "Texto CTA email",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "emailUrl",
+        "label": "URL email",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "footer",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "logo1",
+        "label": "Logo Fundación",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "reference",
+        "name": "logo2",
+        "label": "Logo Premios",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "copyright",
+        "label": "Copyright",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "footer-nav-column",
+    "fields": [
+      {
+        "component": "text",
+        "name": "columnTitle",
+        "label": "Título columna",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "links",
+        "label": "Enlaces",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {
         "component": "aem-content",
         "name": "reference",
         "label": "Reference"
+      }
+    ]
+  },
+  {
+    "id": "header",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "logoMain",
+        "label": "Logo principal",
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "logoPartner",
+        "label": "Logo partner",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "logoMainUrl",
+        "label": "URL logo principal",
+        "value": "/"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "logoPartnerUrl",
+        "label": "URL logo partner"
+      }
+    ]
+  },
+  {
+    "id": "header-social-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Icono red social",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "url",
+        "label": "URL red social"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "label",
+        "label": "Nombre red social"
+      }
+    ]
+  },
+  {
+    "id": "hero-carousel",
+    "fields": [
+      {
+        "component": "text",
+        "name": "editionLabel",
+        "label": "Título de edición",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "hero-carousel-item",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Imagen/thumbnail",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Título del slide",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "videoUrl",
+        "label": "URL del vídeo",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "ctaText",
+        "label": "Texto del CTA",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "ctaUrl",
+        "label": "URL del CTA",
+        "valueType": "string"
       }
     ]
   },
@@ -212,6 +486,147 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "intro-year",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Logo",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "year",
+        "label": "Año",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Descripción",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "requirements",
+    "fields": []
+  },
+  {
+    "id": "requirements-card",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Título",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "subtitle",
+        "label": "Subtítulo",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "cardType",
+        "label": "Tipo de tarjeta",
+        "valueType": "string",
+        "required": true,
+        "options": [
+          {
+            "name": "Checklist",
+            "value": "checklist"
+          },
+          {
+            "name": "Enlaces",
+            "value": "links"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Contenido (lista)",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "vidas-cruzadas",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "logo",
+        "label": "Logo",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Descripción",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "ctaText",
+        "label": "Texto CTA",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "ctaUrl",
+        "label": "URL CTA",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "reference",
+        "name": "decorationImage",
+        "label": "Imagen decorativa",
+        "valueType": "string",
+        "multi": false
+      }
+    ]
+  },
+  {
+    "id": "vidas-cruzadas-item",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Imagen",
+        "valueType": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Título",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "url",
+        "label": "URL historia",
+        "valueType": "string",
+        "required": true
       }
     ]
   }

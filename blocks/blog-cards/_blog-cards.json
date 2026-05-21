@@ -1,0 +1,118 @@
+{
+  "definitions": [
+    {
+      "title": "Blog Cards",
+      "id": "blog-cards",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Blog Cards",
+              "model": "blog-cards"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Blog Cards Item",
+      "id": "blog-cards-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Blog Cards Item",
+              "model": "blog-cards-item"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "blog-cards",
+      "fields": [
+        {
+          "component": "reference",
+          "name": "logo",
+          "label": "Logo del blog",
+          "valueType": "string",
+          "multi": false,
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Título del blog",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "subtitle",
+          "label": "Subtítulo",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "sectionTitle",
+          "label": "Título de sección",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "blog-cards-item",
+      "fields": [
+        {
+          "component": "reference",
+          "name": "image",
+          "label": "Imagen del post",
+          "valueType": "string",
+          "multi": false,
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "postTitle",
+          "label": "Título del post",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "date",
+          "label": "Fecha",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "excerpt",
+          "label": "Extracto",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "url",
+          "label": "URL del post",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "blog-cards-item-filter",
+      "components": [
+        "blog-cards-item"
+      ]
+    }
+  ]
+}

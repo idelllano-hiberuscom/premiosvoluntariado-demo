@@ -1,0 +1,79 @@
+/**
+ * Contact Bar Block — Styles
+ * Figma reference: 1:485 (desktop), 1:181 (mobile)
+ * Model: xwalk (EDS + Universal Editor)
+ */
+
+/* Container root */
+.contact-bar {
+  background: var(--color-primary-dark);
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+}
+
+/* Grid layout */
+.contact-bar-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+/* Heading */
+.contact-bar-title {
+  font: var(--font-weight-regular) 40px/40px var(--font-family-heading);
+  color: var(--color-primary-light);
+  margin: 0;
+}
+
+/* Body text */
+.contact-bar-text {
+  font: var(--font-weight-regular) 20px/30px var(--font-family-heading);
+  color: var(--color-primary-lighter);
+  margin: 0;
+}
+
+/* Actions row */
+.contact-bar-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+/* CTA buttons */
+.contact-bar-cta {
+  background: var(--color-primary-light);
+  color: white;
+  font: var(--font-weight-bold) 24px/24px var(--font-family-cta);
+  padding: var(--spacing-lg);
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.contact-bar-cta:hover,
+.contact-bar-cta:focus-visible {
+  background: var(--color-primary);
+  outline: 2px solid var(--color-primary-lighter);
+  outline-offset: 2px;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .contact-bar-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .contact-bar-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-bar-cta {
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+  }
+}

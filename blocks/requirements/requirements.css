@@ -1,0 +1,120 @@
+/**
+ * Requirements Block — Styles
+ * Figma reference: 1:396 (desktop), 1:118 (mobile)
+ * Model: xwalk (EDS + Universal Editor)
+ *
+ * QA audit: ✅ Validado
+ * QA Changes:
+ * - Añadida clase .requirements-card-body para col[1]
+ */
+
+/* Container */
+.requirements {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* Grid layout */
+.requirements-grid {
+  display: flex;
+  gap: var(--spacing-xl);
+  justify-content: center;
+}
+
+/* Cards */
+.requirements-card {
+  width: 360px;
+  background: var(--color-bg-white);
+  box-shadow: var(--shadow-card);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+/* Card header */
+.requirements-card-header {
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  background: var(--color-bg-grey);
+  border-bottom: 3px solid var(--color-bg-divider);
+}
+
+.requirements-card-title {
+  font: var(--font-weight-regular) 26px/36px var(--font-family-heading);
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.requirements-card-subtitle {
+  font: var(--font-weight-regular) 16px/24px var(--font-family-body);
+  color: var(--color-text-body);
+  margin: var(--spacing-sm) 0 0;
+}
+
+/* Checklist */
+.requirements-list {
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  list-style: none;
+  margin: 0;
+}
+
+.requirements-list-item {
+  font: var(--font-weight-regular) 16px/24px var(--font-family-body);
+  color: var(--color-text-body);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-bg-divider);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+}
+
+.requirements-list-item:last-child {
+  border-bottom: none;
+}
+
+.requirements-check-icon::before {
+  content: '\2713';
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Links card */
+.requirements-links {
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  list-style: none;
+  margin: 0;
+}
+
+.requirements-link-item {
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-bg-divider);
+}
+
+.requirements-link-item:last-child {
+  border-bottom: none;
+}
+
+.requirements-link {
+  font: var(--font-weight-semibold) 16px/20px var(--font-family-cta);
+  color: var(--color-primary-link);
+  text-decoration: underline;
+}
+
+.requirements-link:hover,
+.requirements-link:focus-visible {
+  color: var(--color-primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .requirements-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .requirements-card {
+    width: 100%;
+    max-width: 360px;
+  }
+}

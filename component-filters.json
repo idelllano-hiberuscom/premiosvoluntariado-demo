@@ -19,6 +19,12 @@
     ]
   },
   {
+    "id": "blog-cards-item-filter",
+    "components": [
+      "blog-cards-item"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
@@ -37,6 +43,36 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "footer-nav-column-filter",
+    "components": [
+      "footer-nav-column"
+    ]
+  },
+  {
+    "id": "header",
+    "components": [
+      "header-social-item"
+    ]
+  },
+  {
+    "id": "hero-carousel-item",
+    "components": [
+      "hero-carousel-item"
+    ]
+  },
+  {
+    "id": "requirements-card",
+    "components": [
+      "requirements-card"
+    ]
+  },
+  {
+    "id": "vidas-cruzadas-item-filter",
+    "components": [
+      "vidas-cruzadas-item"
     ]
   }
 ]
