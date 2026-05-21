@@ -8,13 +8,10 @@
  * - Añadida clase .requirements-card-body para col[1]
  */
 
-/* Container */
+/* Container — full width background */
 .requirements {
   padding: var(--spacing-4xl) var(--spacing-2xl);
-  max-width: 1160px;
-  margin: 0 auto;
   background: var(--color-primary-dark);
-  border-radius: 8px;
 }
 
 /* Info banner */
@@ -27,6 +24,9 @@
   padding: var(--spacing-md) var(--spacing-xl);
   border-radius: 4px;
   margin-bottom: var(--spacing-xl);
+  max-width: 1160px;
+  margin-left: auto;
+  margin-right: auto;
   font: var(--font-weight-regular) 16px/24px var(--font-family-body);
 }
 
@@ -49,6 +49,9 @@
   display: flex;
   gap: var(--spacing-xl);
   justify-content: center;
+  align-items: flex-start;
+  max-width: 1160px;
+  margin: 0 auto;
 }
 
 /* Cards */
