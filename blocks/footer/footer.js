@@ -150,7 +150,7 @@ export default function decorate(block) {
 
     // Título de la columna
     if (titleEl) {
-      titleEl.dataset.aueProp = 'columnTitle';
+      titleEl.dataset.aueProp = 'heading';
       titleEl.dataset.aueType = 'text';
       titleEl.dataset.aueLabel = 'Título columna';
     }

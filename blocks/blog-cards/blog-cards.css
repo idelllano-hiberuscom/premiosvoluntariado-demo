@@ -113,7 +113,7 @@
 }
 
 /* Desktop: 768px+ */
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .blog-cards-header {
     flex-direction: row;
     text-align: left;

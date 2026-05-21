@@ -59,7 +59,7 @@
         },
         {
           "component": "text",
-          "name": "ctaUrl",
+          "name": "cta",
           "label": "URL CTA",
           "valueType": "string",
           "required": true

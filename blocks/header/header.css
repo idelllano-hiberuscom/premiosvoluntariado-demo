@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Header Block — Styles
  * Figma reference: Header principal Premios al Voluntariado
  * Model: xwalk (EDS + Universal Editor)
@@ -8,16 +8,13 @@
  * - Sin cambios necesarios
  */
 
-/* 1. Variables locales */
+/* 1. Variables locales + Contenedor raíz */
 .header {
   --header-height-desktop: 88px;
   --header-height-mobile: 60px;
   --header-padding-x: var(--spacing-2xl);
   --header-social-gap: var(--spacing-3xl);
-}
 
-/* 2. Contenedor raiz */
-.header {
   background: var(--color-bg-white);
   padding: 0 var(--header-padding-x);
   position: sticky;
@@ -162,7 +159,7 @@
 }
 
 /* 8. Media queries (mobile) */
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .header {
     position: relative;
   }

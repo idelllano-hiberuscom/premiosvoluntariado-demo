@@ -59,7 +59,7 @@
         },
         {
           "component": "text",
-          "name": "sectionTitle",
+          "name": "heading",
           "label": "Título de sección",
           "valueType": "string",
           "required": true
@@ -79,7 +79,7 @@
         },
         {
           "component": "text",
-          "name": "postTitle",
+          "name": "linkText",
           "label": "Título del post",
           "valueType": "string",
           "required": true
@@ -100,7 +100,7 @@
         },
         {
           "component": "text",
-          "name": "url",
+          "name": "link",
           "label": "URL del post",
           "valueType": "string"
         }

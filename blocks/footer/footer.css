@@ -156,7 +156,7 @@
 }
 
 /* ===== Desktop ===== */
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer .footer-main {
     flex-direction: row;
     justify-content: space-between;

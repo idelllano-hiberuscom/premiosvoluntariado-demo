@@ -65,7 +65,7 @@
       "fields": [
         {
           "component": "text",
-          "name": "columnTitle",
+          "name": "heading",
           "label": "Título columna",
           "valueType": "string",
           "required": true

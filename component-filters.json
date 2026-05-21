@@ -15,7 +15,13 @@
       "hero",
       "cards",
       "columns",
-      "fragment"
+      "fragment",
+      "blog-cards",
+      "hero-carousel",
+      "contact-bar",
+      "intro-year",
+      "requirements",
+      "vidas-cruzadas"
     ]
   },
   {

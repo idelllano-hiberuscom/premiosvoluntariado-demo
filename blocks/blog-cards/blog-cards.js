@@ -54,7 +54,7 @@ export default function decorate(block) {
   sectionRow.classList.add('blog-cards-section-title');
   const sectionH3 = sectionRow.querySelector('h3');
   if (sectionH3) {
-    sectionH3.dataset.aueProp = 'sectionTitle';
+    sectionH3.dataset.aueProp = 'heading';
     sectionH3.dataset.aueType = 'text';
     sectionH3.dataset.aueLabel = 'Título sección';
   }
@@ -102,7 +102,7 @@ export default function decorate(block) {
       const heading = cols[1].querySelector('h4');
       if (heading) {
         heading.classList.add('blog-cards-item-title');
-        heading.dataset.aueProp = 'postTitle';
+        heading.dataset.aueProp = 'linkText';
         heading.dataset.aueType = 'text';
         heading.dataset.aueLabel = 'Título post';
         li.appendChild(heading);

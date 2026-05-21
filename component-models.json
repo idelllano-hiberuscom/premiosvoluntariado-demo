@@ -168,7 +168,7 @@
       },
       {
         "component": "text",
-        "name": "sectionTitle",
+        "name": "heading",
         "label": "Título de sección",
         "valueType": "string",
         "required": true
@@ -188,7 +188,7 @@
       },
       {
         "component": "text",
-        "name": "postTitle",
+        "name": "linkText",
         "label": "Título del post",
         "valueType": "string",
         "required": true
@@ -209,7 +209,7 @@
       },
       {
         "component": "text",
-        "name": "url",
+        "name": "link",
         "label": "URL del post",
         "valueType": "string"
       }
@@ -279,7 +279,7 @@
       },
       {
         "component": "text",
-        "name": "phoneUrl",
+        "name": "phone",
         "label": "URL teléfono",
         "valueType": "string",
         "required": true
@@ -293,7 +293,7 @@
       },
       {
         "component": "text",
-        "name": "emailUrl",
+        "name": "email",
         "label": "URL email",
         "valueType": "string",
         "required": true
@@ -333,7 +333,7 @@
     "fields": [
       {
         "component": "text",
-        "name": "columnTitle",
+        "name": "heading",
         "label": "Título columna",
         "valueType": "string",
         "required": true
@@ -457,7 +457,7 @@
       },
       {
         "component": "text",
-        "name": "ctaUrl",
+        "name": "cta",
         "label": "URL del CTA",
         "valueType": "string"
       }
@@ -538,7 +538,7 @@
       },
       {
         "component": "select",
-        "name": "cardType",
+        "name": "variant",
         "label": "Tipo de tarjeta",
         "valueType": "string",
         "required": true,
@@ -589,7 +589,7 @@
       },
       {
         "component": "text",
-        "name": "ctaUrl",
+        "name": "cta",
         "label": "URL CTA",
         "valueType": "string",
         "required": true

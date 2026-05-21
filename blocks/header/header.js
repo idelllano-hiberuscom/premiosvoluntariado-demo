@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Header Block — AEM Edge Delivery Services
  *
  * Figma reference: Header principal Premios al Voluntariado

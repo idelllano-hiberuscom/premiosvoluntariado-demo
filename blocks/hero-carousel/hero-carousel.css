@@ -4,20 +4,17 @@
  * Model: xwalk (EDS + Universal Editor)
  */
 
-/* 1. Variables locales */
+/* 1. Variables locales + Contenedor raíz */
 .hero-carousel {
   --hero-carousel-transition: transform 0.4s ease;
   --hero-carousel-dot-size: 15px;
   --hero-carousel-dot-active-size: 26px;
   --hero-carousel-dot-height: 4px;
-}
 
-/* 2. Contenedor raíz */
-.hero-carousel {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #0a4f80 0%, rgba(10, 79, 128, 0.85) 70%, white 100%);
+  background: linear-gradient(180deg, #0a4f80 0%, rgb(10 79 128 / 85%) 70%, white 100%);
 }
 
 /* 3. Config row (oculta visualmente, preservada para UE) */
@@ -26,7 +23,7 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -156,7 +153,7 @@
   width: var(--hero-carousel-dot-size);
   height: var(--hero-carousel-dot-height);
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.4);
+  background: rgb(255 255 255 / 40%);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -169,7 +166,7 @@
 }
 
 .hero-carousel-dot:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgb(255 255 255 / 70%);
 }
 
 .hero-carousel-dot:focus-visible {
@@ -178,7 +175,7 @@
 }
 
 /* 10. Media queries (mobile) */
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .hero-carousel-slide {
     flex-direction: column;
     gap: var(--spacing-lg);

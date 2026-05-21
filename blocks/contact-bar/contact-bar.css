@@ -60,7 +60,7 @@
 }
 
 /* Mobile */
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .contact-bar-container {
     grid-template-columns: 1fr;
     text-align: center;

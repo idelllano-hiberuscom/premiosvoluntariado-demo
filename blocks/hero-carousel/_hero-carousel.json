@@ -76,7 +76,7 @@
         },
         {
           "component": "text",
-          "name": "ctaUrl",
+          "name": "cta",
           "label": "URL del CTA",
           "valueType": "string"
         }

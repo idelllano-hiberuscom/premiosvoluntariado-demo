@@ -11,7 +11,7 @@
 }
 
 /* Hide original rows whose content has been moved to .vidas-cruzadas-body */
-.vidas-cruzadas > div:not(.vidas-cruzadas-header):not(.vidas-cruzadas-body) {
+.vidas-cruzadas > div:not(.vidas-cruzadas-header, .vidas-cruzadas-body) {
   display: none;
 }
 
@@ -112,7 +112,7 @@
 }
 
 /* Mobile */
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .vidas-cruzadas-body {
     flex-direction: column;
   }

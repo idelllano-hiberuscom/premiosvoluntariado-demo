@@ -43,7 +43,7 @@
         },
         {
           "component": "text",
-          "name": "phoneUrl",
+          "name": "phone",
           "label": "URL teléfono",
           "valueType": "string",
           "required": true
@@ -57,7 +57,7 @@
         },
         {
           "component": "text",
-          "name": "emailUrl",
+          "name": "email",
           "label": "URL email",
           "valueType": "string",
           "required": true

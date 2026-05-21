@@ -107,7 +107,7 @@
 }
 
 /* Responsive */
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .requirements-grid {
     flex-direction: column;
     align-items: center;

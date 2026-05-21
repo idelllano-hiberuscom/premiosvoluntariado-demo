@@ -54,7 +54,7 @@
         },
         {
           "component": "select",
-          "name": "cardType",
+          "name": "variant",
           "label": "Tipo de tarjeta",
           "valueType": "string",
           "required": true,
