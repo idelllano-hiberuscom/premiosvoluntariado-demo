@@ -16,6 +16,8 @@
       "cards",
       "columns",
       "fragment",
+      "header",
+      "footer",
       "blog-cards",
       "hero-carousel",
       "contact-bar",
