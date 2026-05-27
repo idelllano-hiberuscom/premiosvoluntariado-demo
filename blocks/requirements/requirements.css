@@ -19,13 +19,12 @@
   );
 }
 
-/* Info banner
- #e8f4fd); */
+/* Info banner */
 .requirements-banner {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  background: var(--color-primary-light,#760929);
+  background: var(--color-primary-light,#e8f4fd);
   color: var(--color-primary-dark);
   padding: var(--spacing-md) var(--spacing-xl);
   border-radius: 4px;

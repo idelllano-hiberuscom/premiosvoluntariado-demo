@@ -38,8 +38,8 @@ body {
   --color-text-muted: #899296;
   --color-text-light: #6c828d;
 
-  /* Fondos */
-  --color-bg-white: #fff;
+  /* Fondos --color-bg-white: #fff;*/
+  --color-bg-white: #0aa555;
   --color-bg-light: #f7f9f8;
   --color-bg-grey: #eff3f8;
   --color-bg-divider: #e5e5e5;
